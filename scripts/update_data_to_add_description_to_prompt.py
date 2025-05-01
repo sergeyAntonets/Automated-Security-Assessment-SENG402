@@ -85,7 +85,7 @@ def main():
     # Using relative path to the 2025 BIG dataset
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
-    file_path = os.path.join(project_root, "new-data", "cti-vsp-only-2025-BIG.tsv")
+    file_path = os.path.join(project_root, "new-data", "cti-vsp-only-2024-and-2025-BIG.tsv")
     
     # Uncomment the line below if you want to use SMALL dataset instead
     # file_path = os.path.join(project_root, "new-data", "cti-vsp-only-2024-and-2025-SMALL.tsv")
