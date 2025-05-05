@@ -1,16 +1,21 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import torch
 from huggingface_hub import login
+import os
+from dotenv import load_dotenv
 
-login("TOKEN")
+# Load environment variables from .env file
+load_dotenv()
+
+login(os.getenv("LLAMATOKEN"))
 
 
 model_id = "meta-llama/Llama-3.1-8B"  # Accept the license on Hugging Face!
 
 
 # Load tokenizer and model
-tokenizer = AutoTokenizer.from_pretrained(model_id, use_auth_token=True)
-model = AutoModelForCausalLM.from_pretrained(model_id, use_auth_token=True)
+tokenizer = AutoTokenizer.from_pretrained(model_id, token=True)
+model = AutoModelForCausalLM.from_pretrained(model_id, token=True)
 
 
 def llama_local_generate(prompt, max_tokens=256, temperature=0.7, top_p=0.9):
