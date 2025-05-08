@@ -29,7 +29,8 @@ def read_gt_column(tsv_path):
     with open(tsv_path, newline='', encoding='utf-8') as tsvfile:
         reader = csv.DictReader(tsvfile, delimiter='\t')
         for row in reader:
-            gt_values.append(row['gt'])
+            # Change from 'gt' to 'GT' to match the actual column name in the TSV file
+            gt_values.append(row['GT'])
     return gt_values
 
 # Read results from each model
