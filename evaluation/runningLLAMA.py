@@ -32,7 +32,10 @@ model = AutoModelForCausalLM.from_pretrained(
 # Tokenizer settings
 tokenizer.pad_token = tokenizer.eos_token 
 
-def llama_local_generate(prompt, max_tokens, temperature, top_p):
+def llama_local_generate(sys_prompt, question, max_tokens, temperature, top_p):
+    torch.manual_seed(seed)
+    prompt = f"<|system|>\n{sys_prompt}\n<|user|>\n{question}\n<|assistant|>\n"
+
     inputs = tokenizer(prompt, return_tensors="pt", truncation=True).to("cuda")
     
     with torch.no_grad():
@@ -47,6 +50,9 @@ def llama_local_generate(prompt, max_tokens, temperature, top_p):
     
     result = tokenizer.decode(outputs[0], skip_special_tokens=True)
     
+    # Remove the prompt from the decoded result to return only the assistant's reply
+    result = result.split("<|assistant|>\n")[-1].strip()
+
     del inputs, outputs
     torch.cuda.empty_cache()
     

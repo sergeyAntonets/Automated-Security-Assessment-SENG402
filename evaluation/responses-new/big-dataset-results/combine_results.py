@@ -68,7 +68,7 @@ try:
 
     # Write the combined results to the output file
     with open(output_file, 'w', encoding='utf-8') as f:
-        f.write("GT\tllama-3.1-8B\tgpt-4o-mini\tgemini-2.0-flash\tapi-llama3.1-8b\tapi-llama3.3-70b\n")
+        f.write("GT\tllama-3.1-8B\tgpt-4o-mini\tgemini-2.0-flash\tapi-llama3.1-8b\tapi-llama3.3-70b\tllama-local\n")
         for i in range(max_results):
             line = f"{gt_results[i]}\t{llama_results[i]}\t{gpt_results[i]}\t{gemini_results[i]}\t{api_llama31_results[i]}\t{api_llama33_results[i]}\t{llama_local_results[i]}\n"
             f.write(line)
