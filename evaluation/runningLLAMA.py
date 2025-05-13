@@ -13,7 +13,7 @@ login(os.getenv("LLAMATOKEN"))
 model_id = "meta-llama/Llama-3.1-8B-Instruct" # Updated model ID for the instruct version
 
 bnb_config = BitsAndBytesConfig(
-    load_in_4bit=True,
+    load_in_4bit=True, 
     bnb_4bit_compute_dtype=torch.float16
 )
 
@@ -35,10 +35,10 @@ def llama_local_generate(sys_prompt, question, max_tokens, temperature, top_p, s
     torch.manual_seed(seed)
     
     # Construct messages for the chat template
-    messages = []
-    if sys_prompt and sys_prompt.strip(): # Add system prompt only if it's not empty
-        messages.append({"role": "system", "content": sys_prompt})
-    messages.append({"role": "user", "content": question})
+    messages = [
+        messages.append({"role": "system", "content": sys_prompt}),
+        messages.append({"role": "user", "content": question}),
+        ]
 
     # Apply the chat template. add_generation_prompt=True is important.
     inputs_templated = tokenizer.apply_chat_template(
@@ -59,8 +59,6 @@ def llama_local_generate(sys_prompt, question, max_tokens, temperature, top_p, s
         )
     
     # Decode only the newly generated tokens
-    # outputs[0] contains the full sequence (input + generated response)
-    # inputs_templated.shape[-1] gives the length of the input sequence
     generated_tokens = outputs[0][inputs_templated.shape[-1]:]
     result = tokenizer.decode(generated_tokens, skip_special_tokens=True)
     
