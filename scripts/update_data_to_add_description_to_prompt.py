@@ -1,3 +1,7 @@
+"""
+Used to fix a formatting issue in the 2025 CVE dataset where the description was not included in the prompt.
+"""
+
 import os
 import csv
 import sys
@@ -53,7 +57,9 @@ def update_tsv_with_description(input_file_path):
                     
                     row[2] = prompt
                 rows.append(row)
-        
+
+
+        # Backing up the file as we are modifying file in place, safety incase errors 
         # Make a backup of the original file
         with open(backup_file, 'wb') as f_backup:
             with open(input_file_path, 'rb') as f_orig:
@@ -87,8 +93,6 @@ def main():
     project_root = os.path.dirname(script_dir)
     file_path = os.path.join(project_root, "new-data", "cti-vsp-only-2024-and-2025-BIG.tsv")
     
-    # Uncomment the line below if you want to use SMALL dataset instead
-    # file_path = os.path.join(project_root, "new-data", "cti-vsp-only-2024-and-2025-SMALL.tsv")
     
     print(f"Processing file: {file_path}")
     

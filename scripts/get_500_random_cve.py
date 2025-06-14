@@ -1,3 +1,7 @@
+"""
+Fetch 500 random CVEs from a source TSV file and append them to a target TSV file.
+"""
+
 import os
 import csv
 import random
@@ -8,9 +12,9 @@ def get_random_entries_and_append(source_file, target_file, num_entries=500):
     Randomly selects entries from source_file and appends them to target_file
     
     Args:
-        source_file (str): Path to the source TSV file with 2025 CVEs
-        target_file (str): Path to the target TSV file (with 2024 CVEs)
-        num_entries (int): Number of random entries to select from source_file
+        source_file: Path to the source TSV file 
+        target_file: Path to the target TSV file 
+        num_entries: Number of random entries to select from source_file
     """
     # Read all entries from source file
     source_entries = []
@@ -55,9 +59,9 @@ if __name__ == "__main__":
     project_root = Path(__file__).resolve().parent.parent
     
     # Define input and output file paths
-    source_file = project_root / "new-data" / "nvd_cves_with_2025.tsv"
-    target_file = project_root / "new-data" / "cti-vsp-only-2024.tsv"
-    
+    # SET TO ACTUAL FILES
+    source_file = 'source data'
+    target_file = 'target file'    
     if not source_file.exists():
         print(f"Error: Source file {source_file} not found.")
     elif not target_file.exists():
