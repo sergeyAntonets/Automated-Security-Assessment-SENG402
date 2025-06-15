@@ -6,13 +6,16 @@ import csv
 
 # Define file paths
 base_dir = os.path.dirname(os.path.abspath(__file__))
-gpt_file = os.path.join(base_dir, "SENG402_cti-vsp-only-2024-and-2025-BIG_gpt-4o-mini_results.txt")
-gemini_file = os.path.join(base_dir, "SENG402_cti-vsp-only-2024-and-2025-BIG_gemini-2.0-flash_result.txt")
-api_llama31_8b_file = os.path.join(base_dir, "SENG402_cti-vsp-only-2024-and-2025-BIG_api-llama3.1-8b_result.txt")
-api_llama33_70b_file = os.path.join(base_dir, "SENG402_cti-vsp-only-2024-and-2025-BIG_api-llama3.3-70b_result.txt")
-llama_local_instruct_file = os.path.join(base_dir, "SENG402_cti-vsp-only-2024-and-2025-BIG_llama-local_Llama-3.1-8b_INSTRUCT_result.txt")
-source_tsv = os.path.join(base_dir, "cti-vsp-only-2024-and-2025-BIG.tsv")
-output_file = os.path.join(base_dir, "MAD-results.tsv")
+results_dir = os.path.join(os.path.dirname(base_dir), "evaluation", "responses", "individual-results")
+datasets_dir = os.path.join(os.path.dirname(base_dir), "datasets")
+
+gpt_file = os.path.join(results_dir, "SENG402_2024-and-2025-BIG_gpt-4o-mini_results.txt")
+gemini_file = os.path.join(results_dir, "SENG402_2024-and-2025-BIG_gemini-2.0-flash_result.txt")
+api_llama31_8b_file = os.path.join(results_dir, "SENG402_2024-and-2025-BIG_api-llama3.1-8b_result.txt")
+api_llama33_70b_file = os.path.join(results_dir, "SENG402_2024-and-2025-BIG_api-llama3.3-70b_result.txt")
+llama_local_instruct_file = os.path.join(results_dir, "SENG402_2024-and-2025-BIG_llama-local_Llama-3.1-8b_INSTRUCT_result.txt")
+source_tsv = os.path.join(datasets_dir, "2024-and-2025-BIG.tsv")
+output_file = os.path.join(base_dir, "combined-results.tsv")
 
 def read_results(filepath, add_prefix=False):
     """Read CVSS vectors from result files."""
@@ -30,7 +33,7 @@ def read_results(filepath, add_prefix=False):
     return results
 
 def read_gt_column(tsv_path):
-    """Read the 'gt' column from the provided TSV file."""
+    """Read the 'GT' column from the provided TSV file."""
     gt_values = []
     with open(tsv_path, newline='', encoding='utf-8') as tsvfile:
         reader = csv.DictReader(tsvfile, delimiter='\t')
