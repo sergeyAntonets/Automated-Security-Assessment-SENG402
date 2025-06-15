@@ -106,8 +106,8 @@ def write_cves_to_tsv(cves_data, filename="cves_output.tsv"):
                 if english_description != 'N/A':
                     english_description = english_description.replace('\n', ' ').replace('\r', ' ')
                 
-                # 3. Prompt
-                prompt = standard_prompt
+                # 3. Prompt and append the description
+                prompt = standard_prompt + f" {english_description}"
 
                 # 4. GT (Vector String)
                 vector_string = 'N/A'
