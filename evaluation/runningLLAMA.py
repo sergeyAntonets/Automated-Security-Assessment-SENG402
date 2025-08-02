@@ -41,8 +41,8 @@ def llama_local_generate(sys_prompt, question, max_tokens, temperature, top_p, s
     
     # Build chat messages for the Llama chat template
     messages = [
-        messages.append({"role": "system", "content": sys_prompt}),
-        messages.append({"role": "user", "content": question}),
+        {"role": "system", "content": sys_prompt},
+        {"role": "user", "content": question},
         ]
 
     # Format input for the model using the chat template
