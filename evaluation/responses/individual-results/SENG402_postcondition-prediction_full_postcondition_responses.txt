@@ -1,17 +1,50 @@
-=== CVE 1 ===
-Your task is to classify the post-condition privilege level. Use both the CVE description and CVSS vector to make your decision. Provide a brief justification (1-2 sentences maximum).  What is the post-condition privilege level of this vulnerability? Root. The attacker gains full system or administrative access due to the high impact from the CVSS vector, which indicates that the attacker can compromise confidentiality, integrity, and availability. EXACTLY one of these words: None, User, or Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root. Root
+=== CVE 1 === The CVSS vector indicates that the attacker needs only Network (N)
+access to exploit this vulnerability with a Low (L) attack complexity and no
+user interaction (N). The CVSS vector also indicates that the attacker can gain
+High (H) control over the system, which implies that the attacker gains Root
+privileges. 
 
-=== CVE 2 ===
+##POSTCONDITION Root
 
+=== CVE 2 === The vulnerability allows attackers with contributor-level
+permissions to inject arbitrary web scripts in pages. This implies that the
+attacker can run code as a normal user, but the classification is not Root
+because the attacker must first authenticate and meet the contributor-level
+permission requirement. 
 
-=== CVE 3 ===
+##POSTCONDITION User
 
+=== CVE 3 === The attacker exploits a CSRF vulnerability to perform unauthorized
+user password resets. The CVSS vector shows that the vulnerability allows
+attackers to perform Remote (N) attacks with Low complexity (L) and Normal
+privileges (N) but does not provide any system control or data access.
+Therefore, the attacker can only reset the target user's password, which is a
+user-level action. 
 
-=== CVE 4 ===
+##POSTCONDITION User
 
+=== CVE 4 === The vulnerability allows an authenticated attacker to obtain a
+logged-in administrator's session information containing cookies. Although the
+attacker can leverage cookies to impersonate the administrator, the CVSS vector
+does not indicate any privilege escalation (PR:L) or system control (C:H)
+gained. Therefore, the attacker gains user-level access to the system. 
 
-=== CVE 5 ===
+##POSTCONDITION User
 
+=== CVE 5 === The attacker exploits a crafted TAR archive to read it with a
+verbose value of 2, but the 100-byte buffer may not be sufficient for a custom
+locale. This vulnerability does not seem to provide any remote code execution or
+shell access. It appears to be a denial-of-service vulnerability. The attacker
+cannot gain full system or administrative access. The attacker gains user-level
+access. 
 
-=== CVE 6 ===
+##POSTCONDITION User
 
+=== CVE 6 === The attacker must be authenticated to exploit this vulnerability,
+and they can manipulate the database. However, they do not gain full system or
+administrative access; they gain only user-level access to the database. The 'NT
+AUTHORITY\NetworkService' account has limited privileges. Therefore, the
+attacker can execute code with these permissions but cannot escalate privileges
+to root or administrator. 
+
+##POSTCONDITION User

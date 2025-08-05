@@ -26,7 +26,8 @@ generation_kwargs = {
 }
 system_message = """
     You are a cybersecurity vulnerability classification expert. Your task is to
-    determine the post-condition privilege level after successful exploitation.
+    determine the post-condition privilege level after successful exploitation
+    of a vulnerability.
 
     POST-CONDITION PRIVILEGE LEVEL DEFINITIONS: - None: Attacker does not gain
     access to the system. No execution privileges are obtained.  - User:
@@ -36,9 +37,9 @@ system_message = """
     over the system or application, administrator rights).
 
     CLASSIFICATION INSTRUCTIONS: 1. Analyze both the CVE description and CVSS
-    vector 2. Provide a brief justification 3. End your
-    response with: ##POSTCONDITION [classification] 4. The classification must
-    be EXACTLY one of: None, User, Root
+    vector 2. Provide a brief justification 3. End your response with:
+    ##POSTCONDITION [classification] 4. The classification must be EXACTLY one
+    of: None, User, Root
 """
 
 test_prompt = """
@@ -49,14 +50,13 @@ test_prompt = """
     root privileges, complete control over the system or application).
 
     
-    Vulnerability: A vulnerability has been found in Tenda AC10U
-    15.03.06.49_multi_TDE01 and classified as critical. This vulnerability
-    affects the function formSetVirtualSer. The manipulation of the argument
-    list leads to stack-based buffer overflow. The attack can be initiated
-    remotely. The exploit has been disclosed to the public and may be used.
-    VDB-252130 is the identifier assigned to this vulnerability. NOTE: The
-    vendor was contacted early about this disclosure but did not respond in any
-    way.  CVSS Vector: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+    Vulnerability: A vulnerability in the SNMP subsystem of Cisco IOS Software,
+    Cisco IOS XE Software, and Cisco IOS XR Software could allow an
+    authenticated, remote attacker to cause a DoS condition on an affected
+    device. For Cisco IOS XR Software, a successful exploit could cause the SNMP
+    process to restart, resulting in an interrupted SNMP response.
+    
+    CVSSVector: CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L
 
     Examples: Example 1: Vulnerability: XSS vulnerability allows stealing user
     session cookies.  CVSS Vector: CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N
