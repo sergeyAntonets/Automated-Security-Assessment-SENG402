@@ -1,6 +1,6 @@
 {
   "best_global_step": 26,
-  "best_metric": 0.12698412698412698,
+  "best_metric": 0.03571428571428571,
   "best_model_checkpoint": "./securebert-privilege-classifier/checkpoint-26",
   "epoch": 1.0,
   "eval_steps": 500,
@@ -11,12 +11,12 @@
   "log_history": [
     {
       "epoch": 1.0,
-      "eval_accuracy": 0.2857142857142857,
-      "eval_f1": 0.12698412698412698,
-      "eval_loss": 1.1134207248687744,
-      "eval_runtime": 0.0863,
-      "eval_samples_per_second": 81.082,
-      "eval_steps_per_second": 46.333,
+      "eval_accuracy": 0.14285714285714285,
+      "eval_f1": 0.03571428571428571,
+      "eval_loss": 1.1099330186843872,
+      "eval_runtime": 0.0815,
+      "eval_samples_per_second": 85.838,
+      "eval_steps_per_second": 49.05,
       "step": 26
     }
   ],
