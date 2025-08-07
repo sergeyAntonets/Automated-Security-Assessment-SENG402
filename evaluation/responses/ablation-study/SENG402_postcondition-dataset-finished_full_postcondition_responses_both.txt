@@ -1,0 +1,267 @@
+=== CVE 1 === The attacker can only exploit the vulnerability if the installer
+is run as SYSTEM, implying that the vulnerability is system-level. However, the
+CVSS vector indicates the attacker needs to have at least a local account and
+run with a low privilege level (L) to exploit the vulnerability. Therefore, the
+attacker must first gain low-level privileges on the system to exploit this
+vulnerability. After gaining these privileges, the attacker can then escalate to
+system-level privileges. 
+
+##POSTCONDITION User
+
+=== CVE 2 === The vulnerability is in the installer's executable search paths,
+allowing an attacker to inject a malicious executable to run alongside the
+legitimate installer. This requires the attacker to have some level of social
+engineering or clickjacking capabilities, as the victim must download both the
+legitimate and malicious files. Once the malicious file is executed with SYSTEM
+privileges, the attacker gains complete system control. 
+
+##POSTCONDITION Root
+
+=== CVE 3 === The attacker exploits the non-initialized Identification field in
+the IPv4 header to potentially read sensitive kernel memory. However, the CVSS
+vector indicates the vulnerability is exploitable only with Network access, and
+the Privilege required is Normal. Therefore, the attacker gains at least
+user-level access to kernel memory. 
+
+##POSTCONDITION User
+
+=== CVE 4 === The attacker exploits an uncaught exception in network hardware,
+potentially leading to a remote denial of service. The exploitation does not
+require any additional execution privileges, and user interaction is not
+necessary. Since the goal is to cause a denial of service, the attacker does not
+gain any privileges or access to the system. 
+
+##POSTCONDITION None
+
+=== CVE 5 === The attacker gains full system or administrative access through
+this vulnerability. The exploitation of the read/write vulnerability in the
+image decoding module affects the availability of the system, which implies that
+the attacker can also perform arbitrary code execution or privilege escalation.
+Therefore, the attacker can gain root privileges. 
+
+##POSTCONDITION Root
+
+=== CVE 6 === The attacker must be authenticated to exploit this vulnerability,
+and they must know a valid SNMP community string or SNMP user credentials. They
+can then cause a DoS condition by sending a crafted SNMP request to the affected
+device, which reloads unexpectedly. The attacker does not gain full system or
+administrative access; they can only exploit the vulnerability through valid
+authentication credentials. 
+
+##POSTCONDITION User
+
+=== CVE 7 === The vulnerability is related to an integer overflow in the Linux
+kernel, which can be exploited by a remote attacker. However, according to the
+CVSS vector, the attack requires network access (AV:N) and low attack complexity
+(AC:L), but it does not provide any code execution or system control (PR:N,
+UI:N, S:U, C:N, I:N). Therefore, the attacker can only cause a denial of service
+(A:H) but not gain any user-level access or higher privileges. 
+
+##POSTCONDITION None
+
+=== CVE 8 === The CVSS vector indicates that the vulnerability allows an
+attacker to perform remote attacks (AV:N) with low complexity (AC:L) and no
+privilege gain (PR:N), but it does not directly indicate that the attacker gains
+user-level access. However, the CVSS vector's High Impact (H) and High
+Confidentiality (H) indicates that the vulnerability allows the attacker to gain
+significant control over the system. This is consistent with user-level access. 
+
+##POSTCONDITION User
+
+=== CVE 9 === The vulnerability description states that the exploitation occurs
+in the context of the current user. This indicates that the attacker gains
+user-level access but does not achieve root privileges. 
+
+##POSTCONDITION User
+
+=== CVE 10 === The vulnerability allows an attacker to manipulate paths used by
+pam_namespace, potentially leading to a full system compromise. The CVSS vector
+indicates that if exploited, the attacker gains high control, high impact, and
+high availability. This level of impact is consistent with root privileges. 
+
+##POSTCONDITION Root
+
+=== CVE 11 === The attacker exploits this vulnerability by triggering an IRET
+instruction that leads to access to a GS Base address from the wrong space. This
+allows them to manipulate the GS Base address, which is controlled by the SS
+register, thus gaining system-level access. The attacker must be on the same
+machine as the target and have a valid user account. 
+
+##POSTCONDITION Root
+
+=== CVE 12 === The attacker exploits a flaw in the Linux kernel's handling of
+execute-only pages to gain privileges. This privilege escalation can occur even
+if the application is not running with elevated privileges. Since the attacker
+gains full system or administrative access, the classification is Root. 
+
+##POSTCONDITION Root
+
+=== CVE 13 === The attacker exploits an Uncontrolled Resource Consumption
+vulnerability in the examples web application provided with Apache Tomcat to
+perform a denial-of-service attack. However, the vulnerability does not allow
+the attacker to gain system access or run code with higher privileges. 
+
+##POSTCONDITION None
+
+=== CVE 14 === The vulnerability allows an attacker to execute arbitrary code
+with the victim user's privileges. The CVSS vector indicates that the attack
+requires network access (N) and low attack complexity (L), but no privilege
+requirements (PR:N). This suggests that the attacker can run code at the user
+level. Therefore, the attacker gains user-level access. 
+
+##POSTCONDITION User
+
+=== CVE 15 === The attacker gains user-level access (e.g., running code as a
+normal user, accessing user files) on any device that tries to connect to a
+WePresent presentation system. This vulnerability is limited to user privileges
+and does not provide full system control. 
+
+##POSTCONDITION User
+
+=== CVE 16 === The vulnerability involves a malicious user altering a
+'SavedModel' to cause a denial of service by crashing the Python interpreter.
+Although the CVSS vector indicates a low privilege requirement, the attacker
+must be able to load and manipulate the SavedModel in the first place, which
+typically requires local file system access or at least user-level privileges.
+The attacker does not appear to gain full system or administrative control, so
+the classification should be User. 
+
+##POSTCONDITION User
+
+=== CVE 17 === The attacker does not require privilege to exploit this
+vulnerability, but it does not provide privilege escalation. This vulnerability
+is in a user-level process that can be exploited by normal users. 
+
+##POSTCONDITION User
+
+=== CVE 18 === The attacker exploits a flaw in the dccp_rcv_state_process
+function in the Linux kernel to manipulate DCCP packet data structures in the
+LISTEN state, which allows a local user to obtain root privileges. This is a
+local privilege escalation vulnerability, and the attacker must be already on
+the system to exploit it. The CVSS vector indicates that the vulnerability is
+exploitable with a low attack complexity, low privilege requirement, and high
+control, impact, and access. This indicates that the attacker can gain root
+privileges and manipulate the system. Therefore, the attacker gains full system
+or administrative access. 
+
+##POSTCONDITION Root
+
+=== CVE 19 === The attacker exploits a hard-coded account password vulnerability
+in Cisco Prime Collaboration Provisioning (PCP) Software 11.6. An
+unauthenticated, local attacker can log in to the underlying Linux operating
+system and gain low-privileged user access. After gaining these privileges, the
+attacker can elevate to root privileges. This vulnerability allows the attacker
+to gain full control of the device. 
+
+##POSTCONDITION Root
+
+=== CVE 20 === The attacker needs to be a local user (L) to exploit this
+vulnerability, and after exploiting it, they gain high privileges (C:H/I:H/A:H)
+over the system. This vulnerability is not exploitable by remote attackers or
+unauthenticated users. 
+
+##POSTCONDITION Root
+
+=== CVE 21 === The vulnerability allows an attacker to read arbitrary files that
+match specific criteria. The attacker does not appear to gain full system
+control, but rather exploits a file-reading vulnerability. The CVSS vector
+indicates a high impact on confidentiality, but no impact on integrity or
+availability. This suggests that the attacker can read sensitive data, but not
+manipulate the system. Thus, the attacker gains user-level access to sensitive
+data. 
+
+##POSTCONDITION User
+
+=== CVE 22 === The vulnerability is in Microsoft Office, which is a software
+application. Attackers can run arbitrary code in the context of the current
+user. This suggests that attackers can gain user-level access but do not
+necessarily gain full system or administrative access. 
+
+##POSTCONDITION User
+
+=== CVE 23 === The attacker exploits the flaw in gnome-remote-desktop to exhaust
+system resources and repeatedly crash the process. Although there might be a
+resource leak after multiple attacks, the attacker does not gain full system or
+administrative access. The attacker's goal is to disrupt the
+gnome-remote-desktop process rather than gain user-level access or control over
+the system. 
+
+##POSTCONDITION None
+
+=== CVE 24 === The attacker can access the web interface without a proper login
+by exploiting the authorization bypass in "setupWizard.asp" and then read the
+admin user credentials. This allows the attacker to potentially manipulate the
+device configuration, but it does not grant full system control. 
+
+##POSTCONDITION User
+
+=== CVE 25 === The attacker is authenticated, meaning they have already passed
+user-level authentication, and can then send crafted SOAP API requests to
+execute arbitrary code. The CVSS vector shows that the attacker can gain full
+control over the system (C:H) and impact the confidentiality, integrity, and
+availability (I:H, A:H). This suggests that the attacker gains root-level access
+to the underlying Linux system after exploiting the vulnerability. 
+
+##POSTCONDITION Root
+
+=== CVE 26 === The attacker exploits a privilege escalation vulnerability in the
+Warpgate bastion host. The vulnerability allows a non-admin user to impersonate
+another user's account if single-factor authentication is configured. The
+attacker can guess an admin username, attempt to authenticate with an incorrect
+password, and then enter a valid non-admin username and password to gain admin
+privileges. This vulnerability affects all installations prior to version 0.9.0. 
+
+##POSTCONDITION Root
+
+=== CVE 27 === The attacker can access sensitive information stored in the
+memory of the SAP GUI for Windows program. However, the vulnerability does not
+allow the attacker to change or delete the information; it only allows reading.
+Thus, the attacker gains user-level access to the system. 
+
+##POSTCONDITION User
+
+=== CVE 28 === The vulnerability is exploitable by network-adjacent attackers
+without authentication. The flaw is in the handling of the ntp parameter in the
+check_req.php endpoint, which results from the lack of proper validation of a
+user-supplied string before using it to execute a system call. An attacker can
+leverage this vulnerability to execute code in the context of the www-data user.
+Therefore, the attacker gains user-level access. 
+
+##POSTCONDITION User
+
+=== CVE 29 === The attacker can exploit the OS Command Injection vulnerability
+in the /html/configuracao/debug_info.php endpoint to execute arbitrary commands
+on the server. The command execution is performed with the privileges of the web
+server user (www-data). Therefore, the attacker gains user-level access to the
+system.
+
+##POSTCONDITION User
+
+=== CVE 30 === The attacker requires user privileges to exploit the
+vulnerability, but does not gain full system control. The attacker can escalate
+privileges to an elevated user but not root. Therefore, the attacker's access
+level is higher than a normal user, but not at the root level. 
+
+##POSTCONDITION User
+
+=== CVE 31 === The vulnerability involves a NULL pointer dereference leading to
+a denial of service. It does not appear to allow code execution, privilege
+escalation, or data theft. Therefore, the attacker does not gain user-level
+access to the system. 
+
+##POSTCONDITION None
+
+=== CVE 32 === The attacker can extract the ServiceAccount token and use it to
+submit TokenReview and SubjectAccessReview requests, but this does not allow
+privilege escalation or impersonation; it only exposes information that could
+aid in gathering information for further attacks. This vulnerability does not
+give the attacker full system control but allows them to access user-level
+information in the namespace. 
+
+##POSTCONDITION User
+
+=== CVE 33 === The attacker must be authenticated to exploit this vulnerability,
+and the exploit is limited to the SNMP subsystem. The attacker cannot gain full
+system control or elevated privileges beyond the level of authentication. 
+
+##POSTCONDITION User

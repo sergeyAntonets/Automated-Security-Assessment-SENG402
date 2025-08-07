@@ -9,10 +9,10 @@ model_path = hf_hub_download(model_name, filename=model_file)
 ## Instantiate model from downloaded file
 llm = Llama(
     model_path=model_path,
-    n_ctx=8192,  # Max context for Llama 3
+    n_ctx=2048,  
     n_gpu_layers=-1,  # Offload all layers to GPU
     verbose=False,  # Enable verbose logging to see GPU usage
-    use_mmap=True,  # Recommended for faster loading
+    use_mmap=True,  # for faster loading
 )
 
 
