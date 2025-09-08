@@ -109,17 +109,12 @@ def write_cves_to_tsv(cpe_string, cves):
     filename_parts = cpe_string.split(':')[3:6] # vendor, product, version
     filename = "_".join(filename_parts).replace('*', '').replace(':-', '') + ".tsv"
     
-    # Ensure the directory exists
-    output_dir = "Vulnerabilities"
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    
-    # Ensure the directory exists
-    output_dir = os.path.join("..", "Vulnerabilities")
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    
+    # Get the directory where the script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_dir = os.path.join(script_dir, "Vulnerabilities")
+    os.makedirs(output_dir, exist_ok=True)
     filepath = os.path.join(output_dir, filename)
+
 
     with open(filepath, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f, delimiter='\t')
