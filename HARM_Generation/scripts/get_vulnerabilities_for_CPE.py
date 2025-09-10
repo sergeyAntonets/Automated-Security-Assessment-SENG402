@@ -82,11 +82,11 @@ def get_latest_cves_for_cpe(cpe_string, number_of_CVEs):
                 
                 # Create CVE dictionary
                 cve_dict = {
-                    'id': cve_id,
-                    'cvss_vector': cvss_vector,
-                    'description': description.replace('\n', ' ').replace('\t', ' '),  # Clean up for TSV
-                    'vendor': vendor,
-                    'product': product
+                    'ID': cve_id,
+                    'CVSS_Vector': cvss_vector,
+                    'Description': description.replace('\n', ' ').replace('\t', ' '),  # Clean up for TSV
+                    'Vendor': vendor,
+                    'Product': product
                 }
                 cves.append(cve_dict)
 
