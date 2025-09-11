@@ -50,7 +50,7 @@ class gVulNode(VulnerabilityNode):
         return self.name
                               
 
-class AttackGraph(network):
+class AttackGraph(Network):
     """
     Create attack graph.
     """

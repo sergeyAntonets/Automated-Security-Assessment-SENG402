@@ -15,6 +15,7 @@ class node(object):
     """
     def __init__(self, name):
         self.name = name
+        self.CPE = None
         #Set connections        
         self.connections = []       # vulNode/tNode
         #Store lower layer info     
@@ -25,7 +26,7 @@ class node(object):
         self.isStart = False
         self.isEnd = False
         self.subnet = []
-        self.vul = None             # network
+        self.vulnerabilities = None             # VulnerabilityNetwork
 
     #Set the node as normal/start/end
     def setStart(self):
@@ -80,4 +81,11 @@ class computer(node):
         super(computer, self).__init__(name)
         self.type = 'Computer'
             
-    
+class Device(node):
+    """
+    Create device object.
+    """
+    def __init__(self, name, commonPlatformEnumeration):
+        super(Device, self).__init__(name)
+        self.type = 'Device'
+        self.CPE = commonPlatformEnumeration

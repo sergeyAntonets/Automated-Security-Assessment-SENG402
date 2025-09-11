@@ -10,14 +10,14 @@ from Node import *
 from Topology import *
 import copy
 
-class network(object):
+class Network(object):
     """
     Create network object.
     """
     def __init__(self):
         self.name = ''
         #Initialize node list
-        self.nodes = []     # vulNode/node
+        self.nodes = []     # device node
         #Initialize start and end points
         self.start = None
         self.end = None
@@ -31,7 +31,7 @@ class network(object):
         Copy the network to a network.
         """
         
-        temp = network()
+        temp = Network()
         temp = copy.deepcopy(self)
         
         return temp

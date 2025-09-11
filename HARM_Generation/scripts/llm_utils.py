@@ -7,7 +7,7 @@ import re
 
 
 # System prompt for postcondition classification using both description and CVSS
-SYSTEM_PROMPT_BOTH = """
+POSTCONDITION_SYSTEM_PROMPT_BOTH = """
 You are a cybersecurity vulnerability classification expert. Your task is to
 determine the post-condition privilege level after successful exploitation.
 
@@ -25,7 +25,7 @@ be EXACTLY one of: None, User, Root
 """
 
 # User prompt template for both description and CVSS
-PROMPT_BOTH = """
+POSTCONDITION_PROMPT_BOTH = """
 Classify the vulnerability post-condition privilege as one of the following:
 - None: Attacker does not gain access to the system.  - User: Attacker gains
 user-level access (e.g., running code as a normal user, accessing user
@@ -46,6 +46,29 @@ Justification: Attacker gains database access but not full system control.
 
 Now classify the given vulnerability: Justification: [Your justification]
 ##POSTCONDITION [Your classification: None, User, or Root]
+"""
+
+
+# System prompt for predicting the CVSS vector extraction
+CVSS_VECTOR_SYSTEM_PROMPT = """ 
+You are a cybersecurity expert specializing in cyberthreat intelligence.
+"""
+
+# User prompt template for CVSS vector extraction
+CVSS_VECTOR_PROMPT = """ 
+Analyze the following CVE description and calculate the CVSS v3.1 Base Score.
+Determine the values for each base metric: AV, AC, PR, UI, S, C, I, and A.
+Summarize each metric’s value and provide the final CVSS v3.1 vector string.
+Valid options for each metric are as follows: - Attack Vector (AV): Network (N),
+Adjacent (A), Local (L), Physical (P) - Attack Complexity (AC): Low (L), High
+(H) - Privileges Required (PR): None (N), Low (L), High (H) - User Interaction
+(UI): None (N), Required (R) - Scope (S): Unchanged (U), Changed (C) -
+Confidentiality (C): None (N), Low (L), High (H) - Integrity (I): None (N), Low
+(L), High (H) - Availability (A): None (N), Low (L), High (H) Summarize each
+metric’s value and provide the final CVSS v3.1 vector string. Ensure the final
+line of your response contains only the CVSS v3 Vector String in the following
+format: Example format: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H CVE
+Description:
 """
 
 # LLM generation parameters
@@ -103,8 +126,8 @@ def generate_postcondition_llm(cvss_vector, description, llm_function,
     """
     try:
         # Use both description and CVSS vector
-        system_prompt = SYSTEM_PROMPT_BOTH
-        user_prompt = PROMPT_BOTH.format(description=description, cvss=cvss_vector)
+        system_prompt = POSTCONDITION_SYSTEM_PROMPT_BOTH
+        user_prompt = POSTCONDITION_PROMPT_BOTH.format(description=description, cvss=cvss_vector)
         
         # Call the LLM
         response = llm_function(
@@ -129,3 +152,75 @@ def generate_postcondition_llm(cvss_vector, description, llm_function,
     except Exception as e:
         print(f"LLM generation failed: {e}")
         return 'User'  # Default fallback
+
+
+
+
+def format_cvss_vector(text):
+    """
+    Extract CVSS v3.1 vector string from LLM response text.
+    Returns the last valid CVSS vector found and whether extraction was successful.
+    """
+    # Define the regex pattern for CVSS v3.1 vector string format
+    cvss_pattern = r'CVSS:3\.1/AV:[NALP]/AC:[LH]/PR:[NLH]/UI:[NR]/S:[UC]/C:[NLH]/I:[NLH]/A:[NLH]'
+    
+    # Find all matches in the text
+    matches = re.findall(cvss_pattern, text)
+
+    # Return the last match if any match is found
+    if matches:
+        return matches[-1], True
+    
+    # Fallback for format without 'CVSS:3.1/' prefix
+    cvss_pattern_no_prefix = r'AV:[NALP]/AC:[LH]/PR:[NLH]/UI:[NR]/S:[UC]/C:[NLH]/I:[NLH]/A:[NLH]'
+    matches = re.findall(cvss_pattern_no_prefix, text)
+    if matches:
+        return f"CVSS:3.1/{matches[-1]}", True
+
+    # Return original text if no valid CVSS vector found
+    return text, False
+
+
+def predict_CVSS_vector(description, llm_function,
+                        temperature=DEFAULT_TEMPERATURE,
+                        top_p=DEFAULT_TOP_P,
+                        seed=DEFAULT_SEED,
+                        max_tokens=DEFAULT_MAX_TOKENS):
+    """
+    Predict CVSS vector using LLM based on a CVE description.
+
+    :param description: CVE description
+    :param llm_function: Function to call LLM (e.g., llama_local_generate)
+    :param temperature: LLM temperature parameter
+    :param top_p: LLM top_p parameter
+    :param seed: LLM seed parameter
+    :param max_tokens: Maximum tokens for LLM response
+    :returns: CVSS vector string
+    """
+    try:
+        system_prompt = CVSS_VECTOR_SYSTEM_PROMPT
+        user_prompt = CVSS_VECTOR_PROMPT + description
+
+        # Call the LLM
+        response = llm_function(
+            system_prompt,
+            user_prompt,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            top_p=top_p,
+            seed=seed
+        )
+
+        # Extract CVSS vector from response
+        cvss_vector, success = format_cvss_vector(response)
+
+        if success:
+            return cvss_vector
+        else:
+            print(f"Warning: Failed to extract CVSS vector from LLM response. Returning raw response.")
+            print(f"Raw response: {response}")
+            return response
+
+    except Exception as e:
+        print(f"LLM generation for CVSS vector failed: {e}")
+        return 'Error'  # Default fallback

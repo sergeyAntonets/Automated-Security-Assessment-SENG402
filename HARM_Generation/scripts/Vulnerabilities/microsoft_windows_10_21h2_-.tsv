@@ -1,6 +1,0 @@
-cve_id	cvss_vector	description	vendor	product
-CVE-2025-24063	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Heap-based buffer overflow in Windows Kernel allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2
-CVE-2025-27468	CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H	Improper privilege management in Windows Secure Kernel Mode allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2
-CVE-2025-27488	CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H	Use of hard-coded credentials in Windows Hardware Lab Kit allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2
-CVE-2025-29829	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Use of uninitialized resource in Windows Trusted Runtime Interface Driver allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2
-CVE-2025-29830	CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N	Use of uninitialized resource in Windows Routing and Remote Access Service (RRAS) allows an unauthorized attacker to disclose information over a network.	microsoft	windows_10_21h2

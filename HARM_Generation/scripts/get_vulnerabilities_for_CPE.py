@@ -99,10 +99,9 @@ def get_latest_cves_for_cpe(cpe_string, number_of_CVEs):
         print(f"Error parsing response: {e}")
         return []
 
-def write_cves_to_tsv(cpe_string, cves):
+def get_cve_filepath_for_cpe(cpe_string):
     """
-    Writes a list of CVE dictionaries for a given CPE to a TSV file.
-    The filename is derived from the CPE string.
+    Generates the file path for the CVE TSV file based on the CPE string.
     """
     # Create a sanitized filename from the CPE string
     # Example: cpe:2.3:o:microsoft:windows_10 -> microsoft_windows_10.tsv
@@ -111,10 +110,34 @@ def write_cves_to_tsv(cpe_string, cves):
     
     # Get the directory where the script is located
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    output_dir = os.path.join(script_dir, "Vulnerabilities")
+    output_dir = os.path.join(script_dir, "..","Vulnerabilities")
     os.makedirs(output_dir, exist_ok=True)
-    filepath = os.path.join(output_dir, filename)
+    return os.path.join(output_dir, filename)
 
+def read_cves_from_tsv(filepath):
+    """
+    Reads a list of CVE dictionaries from a TSV file.
+    """
+    cves = []
+    try:
+        with open(filepath, 'r', newline='', encoding='utf-8') as f:
+            # Adjust field names to match the output of get_latest_cves_for_cpe
+            reader = csv.DictReader(f, fieldnames=['ID', 'CVSS_Vector', 'Description', 'Vendor', 'Product'], delimiter='\t')
+            next(reader)  # Skip header row
+            for row in reader:
+                cves.append(row)
+    except FileNotFoundError:
+        print(f"File not found: {filepath}")
+    except Exception as e:
+        print(f"Error reading CVEs from {filepath}: {e}")
+    return cves
+
+def write_cves_to_tsv(cpe_string, cves):
+    """
+    Writes a list of CVE dictionaries for a given CPE to a TSV file.
+    The filename is derived from the CPE string.
+    """
+    filepath = get_cve_filepath_for_cpe(cpe_string)
 
     with open(filepath, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f, delimiter='\t')
@@ -122,11 +145,11 @@ def write_cves_to_tsv(cpe_string, cves):
         writer.writerow(['cve_id', 'cvss_vector', 'description', 'vendor', 'product'])
         for cve in cves:
             writer.writerow([
-                cve['id'], 
-                cve['cvss_vector'], 
-                cve['description'], 
-                cve['vendor'], 
-                cve['product']
+                cve['ID'], 
+                cve['CVSS_Vector'], 
+                cve['Description'], 
+                cve['Vendor'], 
+                cve['Product']
             ])
     print(f"CVEs written to {filepath}")
 
@@ -138,8 +161,25 @@ def fetch_and_write_cves(cpe_string, number_of_CVEs):
     latest_cves = get_latest_cves_for_cpe(cpe_string, number_of_CVEs)
     if latest_cves:
         write_cves_to_tsv(cpe_string, latest_cves)
+    return latest_cves
 
-# Testing the function
-cpe = "cpe:2.3:o:microsoft:windows_10_21h2:-:*:*:*:*:*:arm64:*"
-num_cves = 5
-fetch_and_write_cves(cpe, num_cves)
+def fetch_CVEs_for_CPE(cpe_string, number_of_CVEs=10):
+    """
+    Checks if a CVE file exists for the given CPE. If not, it fetches
+    the CVEs from the NVD API and creates the file.
+    Returns the list of CVEs.
+    """
+    filepath = get_cve_filepath_for_cpe(cpe_string)
+    if not os.path.exists(filepath):
+        print(f"File {filepath} not found. Fetching CVEs...")
+        return fetch_and_write_cves(cpe_string, number_of_CVEs)
+    else:
+        print(f"File {filepath} already exists.")
+        return read_cves_from_tsv(filepath)
+
+
+
+# # Testing the function
+# cpe = "cpe:2.3:o:microsoft:windows_10_21h2:-:*:*:*:*:*:arm64:*"
+# num_cves = 5
+# fetch_and_write_cves(cpe, num_cves)

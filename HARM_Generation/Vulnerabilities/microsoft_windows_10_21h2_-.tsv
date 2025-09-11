@@ -1,0 +1,6 @@
+cve_id	cvss_vector	description	vendor	product
+CVE-2025-24068	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Buffer over-read in Windows Storage Management Provider allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2
+CVE-2025-24069	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Out-of-bounds read in Windows Storage Management Provider allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2
+CVE-2025-32712	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Use after free in Windows Win32K - GRFX allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2
+CVE-2025-32713	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Heap-based buffer overflow in Windows Common Log File System Driver allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2
+CVE-2025-32714	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Improper access control in Windows Installer allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2

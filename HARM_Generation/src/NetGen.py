@@ -1,0 +1,85 @@
+"""
+Module responsible for creating a network and the devices.
+"""
+
+from Network import Network
+from Node import Device
+from Vulnerability import VulnerabilityNode
+from VulnerabilityNetwork import VulnerabilityNetwork
+import sys
+import os
+
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from scripts.get_vulnerabilities_for_CPE import *
+
+def createSimpleNetwork():
+    """
+    Create a simple network with two devices.
+    :returns: network: the created network
+    """
+
+    # CPE for PC device
+    device1_CPE="cpe:2.3:o:microsoft:windows_10_21h2:-:*:*:*:*:*:arm64:*"
+    # CPE for server device
+    device2_CPE="cpe:2.3:o:canonical:ubuntu_linux:22.04:*:*:*:lts:*:*:*"
+
+   
+    
+    # Create clinet computer, set it as the starting point for attacker and add vulnerabilities to it
+    device1 = Device("WindowsPC", device1_CPE)
+    device1.setStart()
+    addVulnerabilitiesToDevice(device1)
+
+    # Add server computer, set it as the end point of the attack and add vulnerabilities to it
+    device2 = Device("LinuxServer", device2_CPE)
+    addVulnerabilitiesToDevice(device2)
+    device2.setEnd()
+
+    # Create a new network
+    network = Network()
+    network.name = "Simple 2-device network"
+
+    # Add the devices to the network
+    network.nodes.append(device1)
+    network.nodes.append(device2)
+
+    # Set start and end devices in the network
+    network.start = device1
+    network.end = device2
+
+    # Connect devices on the network
+    network.connectTwoWays(device1, device2)
+
+    # Return the created network
+    return network
+
+def addVulnerabilitiesToDevice(device: Device):
+    """
+    Fetch vulnerabilities for the device's CPE and add them to the device's vulnerability network.
+    :param device: Device object to which vulnerabilities will be added
+    """
+
+    # Fetch vulnerabilities for the device's CPE
+    vulnerabilities_list: list = fetch_CVEs_for_CPE(device.CPE, number_of_CVEs=5)
+
+    # Initialize with an empty list
+    vuln_network = VulnerabilityNetwork([])  
+
+    # Convert each vulnerability row from file to a VulnerabilityNode and add to the VulnerabilityNetwork
+    for vulnerability in vulnerabilities_list:
+        # The constructor __init__ requires a 'name'. We can pass an empty string
+        # as it will be overwritten in construct_vulnerability.
+        new_vulnerability_node: VulnerabilityNode = VulnerabilityNode("")
+        new_vulnerability_node.construct_vulnerability(vulnerability)
+        vuln_network.all_vulnerabilities.append(new_vulnerability_node)
+
+    vuln_network.categorizeVulnerabilities()
+
+    device.vulnerabilities = vuln_network
+
+
+x = createSimpleNetwork()
+print(x)
+
+    
