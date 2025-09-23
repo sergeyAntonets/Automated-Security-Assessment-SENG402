@@ -6,12 +6,40 @@ from Network import Network
 from Node import Device
 from Vulnerability import VulnerabilityNode
 from VulnerabilityNetwork import VulnerabilityNetwork
+from Harm import Harm
 import sys
 import os
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from scripts.get_vulnerabilities_for_CPE import *
+
+def addVulnerabilitiesToDevice(device: Device):
+    """
+    Helper function to fetch vulnerabilities for the device's CPE and add them to the device's vulnerability network.
+    :param device: Device object to which vulnerabilities will be added
+    """
+
+    # Fetch vulnerabilities for the device's CPE from saved file or NVD
+    vulnerabilities_list: list = fetch_CVEs_for_CPE(device.CPE, number_of_CVEs=5)
+
+    # Initialize with an empty list
+    vuln_network = VulnerabilityNetwork([])  
+
+    # Convert each vulnerability row from file to a VulnerabilityNode and add to the VulnerabilityNetwork
+    for vulnerability in vulnerabilities_list:
+        # The constructor __init__ requires a 'name'. We can pass an empty string
+        # as it will be overwritten in construct_vulnerability.
+        new_vulnerability_node: VulnerabilityNode = VulnerabilityNode("")
+        new_vulnerability_node.construct_vulnerability(vulnerability)
+        vuln_network.all_vulnerabilities.append(new_vulnerability_node)
+
+    vuln_network.categorizeVulnerabilities()
+
+    device.vulnerabilities = vuln_network
+
+
+
 
 def createSimpleNetwork():
     """
@@ -23,8 +51,6 @@ def createSimpleNetwork():
     device1_CPE="cpe:2.3:o:microsoft:windows_10_21h2:-:*:*:*:*:*:arm64:*"
     # CPE for server device
     device2_CPE="cpe:2.3:o:canonical:ubuntu_linux:22.04:*:*:*:lts:*:*:*"
-
-   
     
     # Create clinet computer, set it as the starting point for attacker and add vulnerabilities to it
     device1 = Device("WindowsPC", device1_CPE)
@@ -33,8 +59,8 @@ def createSimpleNetwork():
 
     # Add server computer, set it as the end point of the attack and add vulnerabilities to it
     device2 = Device("LinuxServer", device2_CPE)
-    addVulnerabilitiesToDevice(device2)
     device2.setEnd()
+    addVulnerabilitiesToDevice(device2)
 
     # Create a new network
     network = Network()
@@ -54,32 +80,19 @@ def createSimpleNetwork():
     # Return the created network
     return network
 
-def addVulnerabilitiesToDevice(device: Device):
+
+
+
+
+def main():
     """
-    Fetch vulnerabilities for the device's CPE and add them to the device's vulnerability network.
-    :param device: Device object to which vulnerabilities will be added
+    The entry point for network generation.
     """
 
-    # Fetch vulnerabilities for the device's CPE
-    vulnerabilities_list: list = fetch_CVEs_for_CPE(device.CPE, number_of_CVEs=5)
+    simple_network = createSimpleNetwork()
+    print(simple_network)
 
-    # Initialize with an empty list
-    vuln_network = VulnerabilityNetwork([])  
-
-    # Convert each vulnerability row from file to a VulnerabilityNode and add to the VulnerabilityNetwork
-    for vulnerability in vulnerabilities_list:
-        # The constructor __init__ requires a 'name'. We can pass an empty string
-        # as it will be overwritten in construct_vulnerability.
-        new_vulnerability_node: VulnerabilityNode = VulnerabilityNode("")
-        new_vulnerability_node.construct_vulnerability(vulnerability)
-        vuln_network.all_vulnerabilities.append(new_vulnerability_node)
-
-    vuln_network.categorizeVulnerabilities()
-
-    device.vulnerabilities = vuln_network
-
-
-x = createSimpleNetwork()
-print(x)
+    # harm = Harm()
+    # harm.constructHarm(simple_network, "attackgraph",1,"attacktree",1,3)
 
     

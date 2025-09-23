@@ -72,7 +72,7 @@ class AttackGraph(Network):
                 if type(u) is VulnerabilityNode:
                     gn = gVulNode('ag_' + str(u.name))
                     gn.privilege = u.privilege
-                    gn.mv2 = u.mv2
+                    # gn.mv2 = u.mv2
                 #For node
                 else:
                     gn = GraphNode('ag_' + str(u.name))
@@ -195,51 +195,3 @@ class AttackGraph(Network):
     def calcPath(self):
         return self.travelAg()
     
-    #-----------------------------------------------------------------------------------------------------------------------
-    #Security analysis part: including CVSS base score, attack impact, risk and attack success probability
-
-    #In case that the node is in the upper layer and has child (not none), assign child value to node value 
-    def getBaseScore(self):
-        for u in self.nodes:
-            if u.child is not None:
-                u.mv2.baseScore = u.child.calcBaseScore()
-                #print(u.name, u.mv2.baseScore)
-
-    def calcBaseScore(self):
-        self.getBaseScore()
-    
-    #In case that the node is in the upper layer and has child (not none), assign child value to node value 
-    def getImpactValue(self):
-        for u in self.nodes:
-            if u.child is not None:
-                u.mv2.impactScore = u.child.calcImpact()
-                #print(u.name, u.val)
-
-    def calcImpact(self):
-        self.getImpactValue()
-
-    #In case that the node is in the upper layer and has child (not none), assign child value to node value 
-    def getProValue(self):
-        for u in self.nodes:
-            if u.child is not None: 
-                u.mv2.probability = u.child.calcPro()
-                #print(u.name, u.val)
-
-    def calcPro(self):
-        self.getProValue()
-
-    #In case that the node is in the upper layer and has child (not none), assign child value to node value 
-    def getRiskValue(self):
-        for u in self.nodes:
-            if u.child is not None: 
-                u.mv2.risk = u.child.calcRisk()
-                #print(u.name, u.val)
-
-    def calcRisk(self):
-        self.getRiskValue()
-
-    #When the node in the upper layer has one vulnerability, calculate the value for parent node 
-    def getNodeValue(self):
-        for u in self.nodes:
-            if u.child is not None: 
-                u.val = u.child.getNodeValue(u.child.topGate)

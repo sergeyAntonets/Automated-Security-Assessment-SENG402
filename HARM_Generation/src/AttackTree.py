@@ -51,7 +51,7 @@ class orGate(node):
         self.t = "orGate"
 
      
-class at(object):
+class AttackTree(object):
     """
     Create attack tree.
     """
@@ -63,51 +63,51 @@ class at(object):
     
     #Preprocess for the construction
     def preprocess(self, network, nodes, val, *arg):  
-        for u in [network.start, network.end] + network.nodes:
-            if u is not None:
+        for network_node in [network.start, network.end] + network.nodes:
+            if network_node is not None:
                 #For vulNode
-                if type(u) is VulnerabilityNode:
-                    tn = tVulNode('at_'+str(u.name))
-                    tn.privilege = u.privilege
-                    tn.mv2 = u.mv2
-                    tn.vulname = u.name
+                if type(network_node) is VulnerabilityNode:
+                    tree_node = tVulNode('at_'+str(network_node.name))
+                    tree_node.privilege = network_node.privilege
+                    # tn.mv2 = u.mv2
+                    tree_node.vulname = network_node.name
                 #For node
                 else:
-                    tn = tNode('at_'+str(u.name))
+                    tree_node = tNode('at_'+str(network_node.name))
                     
                     #Assign default value to attacker node
-                    if u.isStart == True:
-                        tn.val = -1
+                    if network_node.isStart == True:
+                        tree_node.val = -1
                     else:
-                        tn.val = val
+                        tree_node.val = val
                     
-                tn.n = u
+                tree_node.n = network_node
                 
                 #Assign default value to start and end in vulnerability network
-                if u in [network.start, network.end]:
-                    tn.val = 0
-                    tn.command = 1
+                if network_node in [network.start, network.end]:
+                    tree_node.val = 0
+                    tree_node.command = 1
                     
-                nodes.append(tn)   
+                nodes.append(tree_node)   
         
         #Initialize connections for attack tree node
         # tnode
-        for u in nodes:
+        for network_node in nodes:
             # vulNode
-            for v in u.n.connections:
+            for v in network_node.n.connections:
                 #For upper layer
                 if len(arg) is 0:
                     # tNode
                     for t in nodes:
                         if t.n is v:
-                            u.connections.append(t)
+                            network_node.connections.append(t)
                 #For lower layer
                 else:
                     # Privilege value is used here to decide what vulnerabilities an attacker can use for attack paths 
                     if v.privilege is not None and arg[0] >= v.privilege:
                         for t in nodes:
                             if t.n is v:
-                                u.connections.append(t)      
+                                network_node.connections.append(t)      
         return None
     
     #Construct the attack tree
@@ -235,199 +235,4 @@ class at(object):
         self.tPrintRecursive(self.topGate)
 
 
-    #---------------------------------------------------------------------------------------------------------------------------
-    #Security analysis part: including attack impact, attack cost, return-on-attack, risk and attack success probability
-
-
-    #---------------------------------------------------------------------------------------------------------------------------  
-    #AT is upper layer
-    #Assign child value to node value recursively
-
-    def getBaseScoreRecursive(self, gate):
-        for u in gate.connections:
-            if u.t is "node":
-                if u.child is not None:
-                    u.mv2.baseScore = u.child.calcBaseScore()
-            else:
-                self.getBaseScoreRecursive(u)
-      
-    def getBaseScore(self):
-        self.getBaseScoreRecursive(self.topGate)
-
-    def getImpactValueRecursive(self, gate):
-        for u in gate.connections:
-            if u.t is "node":
-                if u.child is not None:
-                    u.mv2.impactScore = u.child.calcImpact()
-            else:
-                self.getImpactValueRecursive(u)
-      
-    def getImpactValue(self):
-        self.getImpactValueRecursive(self.topGate)
-
-    def getProValueRecursive(self, gate):
-        for u in gate.connections:
-            if u.t is "node": 
-                if u.child is not None:                
-                    u.mv2.probability = u.child.calcPro()
-            else:
-                self.getProValueRecursive(u)
-    
-    def getProValue(self):
-        self.getProValueRecursive(self.topGate)
-
-    def getRiskRecursive(self, gate):
-        for u in gate.connections:
-            if u.t is "node": 
-                if u.child is not None:                
-                    u.mv2.risk = u.child.calcRisk()
-            else:
-                self.getRiskRecursive(u)
-    
-    def getRisk(self):
-        self.getRiskRecursive(self.topGate)
-
-    #----------------------------------------------------------------------------------------------    
-    #AT is lower layer
-
-    #Calculate the base score for each node in the attack tree
-    def calcBaseScoreRecursive(self, s):    
-        if s.t is "andGate":
-            val = 0
-            for u in s.connections:                
-                val += self.calcBaseScoreRecursive(u) 
-                #print ('and: ', val)
-        elif s.t is "orGate":
-            val = 0
-            for u in s.connections:
-                tval = self.calcBaseScoreRecursive(u)
-                if tval >= val:
-                    val = tval 
-                    #print('or:', val)
-        elif s.t is "node":
-            val = s.mv2.baseScore
-            #print('node value: ', val, s.name)
-        else:
-            val = 0
-        return val
-    
-    #Get the base score of each node in the attack tree
-    def calcBaseScore(self):
-        return self.calcBaseScoreRecursive(self.topGate)
    
-    #Calculate the impact value for each node in the attack tree
-    def calcImpactRecursive(self, s):    
-        if s.t is "andGate":
-            val = 0
-            for u in s.connections:                
-                val += self.calcImpactRecursive(u) 
-                #print ('and: ', val)
-        elif s.t is "orGate":
-            val = 0
-            for u in s.connections:
-                tval = self.calcImpactRecursive(u)
-                if tval >= val:
-                    val = tval 
-                    #print('or:', val)
-        elif s.t is "node":
-            val = s.mv2.impactScore
-            #print('node value: ', val, s.name)
-        else:
-            val = 0
-        return val
-    
-    #Get the impact value of each node in the attack tree
-    def calcImpact(self):
-        return self.calcImpactRecursive(self.topGate)
-
-    #Calculate the probability value for each node in the attack tree
-    def calcProRecursive(self, s):      
-        if s.t is "andGate":
-            val = 1.0
-            for u in s.connections:
-                val *= self.calcProRecursive(u) #probability
-                print('and: ', val)
-        elif s.t is "orGate":
-            val = 1.0
-            for u in s.connections:
-                tval = self.calcProRecursive(u)
-                #print('tval: ', tval)
-                if tval > 0:
-                    val *= (1.0-self.calcProRecursive(u)) #probability
-            val = 1.0-val
-            #print('or: ', val)
-        elif s.t is "node" and s.mv2.probability > 0:
-            val = s.mv2.probability
-            #print('node: ', val, s.name)
-        else:
-            val = 1.0
-        return val
-
-    #Get the probability value of each node in the attack tree
-    def calcPro(self):
-        return self.calcProRecursive(self.topGate)
-
-
-    #Calculate the risk value for each node in the attack tree
-    def calcRiskRecursive(self, s):    
-        if s.t is "andGate":
-            val = 0
-            for u in s.connections:                
-                val += self.calcRiskRecursive(u) 
-                #print ('and:', val)
-        elif s.t is "orGate":
-            val = 0
-            for u in s.connections:
-                tval = self.calcRiskRecursive(u)
-                if tval >= val:
-                    val = tval 
-        elif s.t is "node":
-            val = s.mv2.risk
-        else:
-            val = 0
-        return val
-    
-    #Get the risk value of each node in the attack tree
-    def calcRisk(self):
-        return self.calcRiskRecursive(self.topGate)
-
-    #When only one node is in the attack tree, calculate the value for the node
-    def getNodeValue(self, s):    
-        if s.t is "andGate":
-            val = 0
-            for u in s.connections:                
-                val = self.getNodeValue(u) 
-        elif s.t is "orGate":
-            val = 0
-            for u in s.connections:
-                val = self.getNodeValue(u)
-        elif s.t is "node":
-            val = s.val
-        else:
-            val = 0
-        return val
-
-    #For MTTC
-    #Get value recursively
-    def getValueRecursive(self, gate, elements):
-        for u in gate.connections:
-            if u.t is "node": 
-                if u.val > 0:
-                    elements.append((u.name, u.val))
-                #print (elements)
-            else:
-                self.getValueRecursive(u, elements)
-        return None
-
-    #Get gate type recursively
-    def getGateRecursive(self, gate, orn, andn):
-        for u in gate.connections:
-            if u.t is 'orGate': 
-                orn = orn + 1
-                #print (u.name, orn)
-                orn, andn = self.getGateRecursive(u, orn, andn)
-            elif u.t is 'andGate':
-                andn = andn + 1
-                #print (u.name, andn)
-                orn, andn = self.getGateRecursive(u, orn, andn)
-        return (orn, andn)

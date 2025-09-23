@@ -10,7 +10,7 @@ This module constructs HARMs using AG, AT in both upper and lower layers.
 from AttackGraph import *
 from AttackTree import *
 
-class harm(object):
+class Harm(object):
     """
     Create harm object.
     """
@@ -27,7 +27,7 @@ class harm(object):
                 if (u.n is not None) and (u.n.vul is not None):
                     childType = childType.lower()
                     if childType.find("attacktree") >= 0:
-                        u.child = at(u.n.vul, val, pri)
+                        u.child = AttackTree(u.n.vul, val, pri)
                     elif childType.find("attackgraph") >= 0:
                         u.child = AttackGraph(u.n.vul, val, pri)
                     else:
@@ -43,7 +43,7 @@ class harm(object):
             if (u.n is not None) and (u.n.vul is not None):
                 childType = childType.lower()
                 if childType.find("attacktree") >= 0:
-                    u.child = at(u.n.vul, val, pri)
+                    u.child = AttackTree(u.n.vul, val, pri)
                 elif childType.find("attackgraph") >= 0:
                     u.child = AttackGraph(u.n.vul, val, pri)
                 else:
@@ -68,7 +68,7 @@ class harm(object):
         
         #Construct upper layer  
         if up.find("attacktree") >= 0:
-            harm = at(net, vu)
+            harm = AttackTree(net, vu)
             print("Upper layer constructed")
         elif up.find("attackgraph") >= 0:
             harm = AttackGraph(net, vu)

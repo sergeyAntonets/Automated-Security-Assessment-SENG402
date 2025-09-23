@@ -181,7 +181,7 @@ def format_cvss_vector(text):
     return text, False
 
 
-def predict_CVSS_vector(description, llm_function,
+def predict_cvss_vector(description, llm_function,
                         temperature=DEFAULT_TEMPERATURE,
                         top_p=DEFAULT_TOP_P,
                         seed=DEFAULT_SEED,
