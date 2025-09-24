@@ -24,12 +24,12 @@ class Harm(object):
         for u in gate.con:
             #print(u.name)
             if u.t == "node":
-                if (u.n is not None) and (u.n.vul is not None):
+                if (u.n is not None) and (u.n.vulnerabilities is not None):
                     childType = childType.lower()
                     if childType.find("attacktree") >= 0:
-                        u.child = AttackTree(u.n.vul, val, pri)
+                        u.child = AttackTree(u.n.vulnerabilities, val, pri)
                     elif childType.find("attackgraph") >= 0:
-                        u.child = AttackGraph(u.n.vul, val, pri)
+                        u.child = AttackGraph(u.n.vulnerabilities, val, pri)
                     else:
                         print("Error")
             else:
@@ -40,12 +40,12 @@ class Harm(object):
         
     def addToGraph(self, aG, childType, val, pri):
         for u in aG.nodes:
-            if (u.n is not None) and (u.n.vul is not None):
+            if (u.n is not None) and (u.n.vulnerabilities is not None):
                 childType = childType.lower()
                 if childType.find("attacktree") >= 0:
-                    u.child = AttackTree(u.n.vul, val, pri)
+                    u.child = AttackTree(u.n.vulnerabilities, val, pri)
                 elif childType.find("attackgraph") >= 0:
-                    u.child = AttackGraph(u.n.vul, val, pri)
+                    u.child = AttackGraph(u.n.vulnerabilities, val, pri)
                 else:
                     print("Error")
     

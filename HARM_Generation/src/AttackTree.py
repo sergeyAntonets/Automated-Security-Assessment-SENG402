@@ -20,7 +20,7 @@ class tNode(node):
         self.n = None
         self.t = "node"
         self.val = 0
-        self.mv3 = metrics_v3()
+        # self.mv3 = metrics_v3()
     
     def __str__(self):
         return self.name
@@ -35,7 +35,7 @@ class tVulNode(VulnerabilityNode):
         self.t = "node"
         self.val = 0
         self.command = 0
-        self.mv3 = metrics_v3()
+        # self.mv3 = metrics_v3()
         
     def __str__(self):
         return self.name
@@ -63,12 +63,12 @@ class AttackTree(object):
     
     #Preprocess for the construction
     def preprocess(self, network, nodes, val, *arg):  
-        for network_node in [network.start, network.end] + network.nodes:
+        for network_node in network.start + network.end + network.nodes:
             if network_node is not None:
                 #For vulNode
                 if type(network_node) is VulnerabilityNode:
                     tree_node = tVulNode('at_'+str(network_node.name))
-                    tree_node.privilege = network_node.privilege
+                    tree_node.precondition = network_node.precondition
                     # tn.mv2 = u.mv2
                     tree_node.vulname = network_node.name
                 #For node

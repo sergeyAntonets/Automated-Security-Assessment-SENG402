@@ -1,6 +1,16 @@
-cve_id	cvss_vector	description	vendor	product
-CVE-2025-24068	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Buffer over-read in Windows Storage Management Provider allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2
-CVE-2025-24069	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Out-of-bounds read in Windows Storage Management Provider allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2
-CVE-2025-32712	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Use after free in Windows Win32K - GRFX allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2
-CVE-2025-32713	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Heap-based buffer overflow in Windows Common Log File System Driver allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2
-CVE-2025-32714	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Improper access control in Windows Installer allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2
+cve_id	cvss_vector	description	vendor	product	postcondition
+CVE-2025-24068	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Buffer over-read in Windows Storage Management Provider allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2	User
+CVE-2025-24069	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Out-of-bounds read in Windows Storage Management Provider allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2	User
+CVE-2025-32712	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Use after free in Windows Win32K - GRFX allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2	Root
+CVE-2025-32713	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Heap-based buffer overflow in Windows Common Log File System Driver allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2	Root
+CVE-2025-32714	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Improper access control in Windows Installer allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2	Root
+CVE-2025-32715	CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N	Out-of-bounds read in Remote Desktop Client allows an unauthorized attacker to disclose information over a network.	microsoft	windows_10_21h2	User
+CVE-2025-32716	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Out-of-bounds read in Windows Media allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2	Root
+CVE-2025-32718	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H	Integer overflow or wraparound in Windows SMB allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2	Root
+CVE-2025-32719	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Out-of-bounds read in Windows Storage Management Provider allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2	User
+CVE-2025-32720	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Out-of-bounds read in Windows Storage Management Provider allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2	User
+CVE-2025-32721	CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H	Improper link resolution before file access ('link following') in Windows Recovery Driver allows an authorized attacker to elevate privileges locally.	microsoft	windows_10_21h2	User
+CVE-2025-32722	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Improper access control in Windows Storage Port Driver allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2	User
+CVE-2025-32724	CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H	Uncontrolled resource consumption in Windows Local Security Authority Subsystem Service (LSASS) allows an unauthorized attacker to deny service over a network.	microsoft	windows_10_21h2	Root
+CVE-2025-33052	CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N	Use of uninitialized resource in Windows DWM Core Library allows an authorized attacker to disclose information locally.	microsoft	windows_10_21h2	User
+CVE-2025-33053	CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H	External control of file name or path in Internet Shortcut Files allows an unauthorized attacker to execute code over a network.	microsoft	windows_10_21h2	User

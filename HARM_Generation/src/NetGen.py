@@ -10,7 +10,6 @@ from Harm import Harm
 import sys
 import os
 
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from scripts.get_vulnerabilities_for_CPE import *
 
@@ -21,22 +20,17 @@ def addVulnerabilitiesToDevice(device: Device):
     """
 
     # Fetch vulnerabilities for the device's CPE from saved file or NVD
-    vulnerabilities_data = fetch_CVEs_for_CPE(device.CPE, number_of_CVEs=5)
+    vulnerabilities_data = fetch_CVEs_for_CPE(device.CPE, number_of_CVEs=15)
 
     # Create a list of VulnerabilityNode objects
     vulnerability_nodes = []
     for vuln_data in vulnerabilities_data:
         node = VulnerabilityNode("")  # Create node
-        node.construct_vulnerability(vuln_data)  # Populate node
+        node.construct_vulnerability(vuln_data, device.CPE)  # Populate node
         vulnerability_nodes.append(node)
 
     # Create the VulnerabilityNetwork by passing the list of nodes to the constructor
     device.vulnerabilities = VulnerabilityNetwork(vulnerability_nodes)
-
-
-
-
-
 
 def createSimpleNetwork():
     """
@@ -47,7 +41,7 @@ def createSimpleNetwork():
     # CPE for PC device
     device1_CPE="cpe:2.3:o:microsoft:windows_10_21h2:-:*:*:*:*:*:arm64:*"
     # CPE for server device
-    device2_CPE="cpe:2.3:o:canonical:ubuntu_linux:22.04:*:*:*:lts:*:*:*"
+    device2_CPE="cpe:2.3:o:canonical:ubuntu_linux:20.04:*:*:*:lts:*:*:*"
     
     # Create clinet computer, set it as the starting point for attacker and add vulnerabilities to it
     device1 = Device("WindowsPC", device1_CPE)
@@ -78,9 +72,6 @@ def createSimpleNetwork():
     return network
 
 
-
-
-
 def main():
     """
     The entry point for network generation.
@@ -89,8 +80,8 @@ def main():
     simple_network = createSimpleNetwork()
     print(simple_network)
 
-    # harm = Harm()
-    # harm.constructHarm(simple_network, "attackgraph",1,"attacktree",1,3)
+    harm = Harm()
+    harm.constructHarm(simple_network, "attackgraph",1,"attacktree",1,3)
 
 
 

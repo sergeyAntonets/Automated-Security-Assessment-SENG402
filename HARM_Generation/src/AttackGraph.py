@@ -27,7 +27,7 @@ class GraphNode(node):
         #Used to check whether the node is included in the attack path or not
         self.inPath = 0
         self.subnet = []
-        self.mv3 = metrics_v3()
+        # self.mv3 = metrics_v3()
         
     def __str__(self):
         return self.name
@@ -44,7 +44,7 @@ class gVulNode(VulnerabilityNode):
         #Store the Simulation value used in security analysis
         self.val = 0
         self.inPath = 0
-        self.mv3 = metrics_v3()
+        # self.mv3 = metrics_v3()
         
     def __str__(self):
         return self.name
@@ -99,22 +99,22 @@ class AttackGraph(Network):
                 #print(gn.name)
 
 
-        #Initialize reachable_vulnerabilities for attack graph node   
+        #Initialize connections for attack graph node   
         for u in self.nodes:       
             #print(u)
-            for v in u.n.reachable_vulnerabilities:
+            for v in u.n.connections:
                 #For upper layer
                 if len(arg) == 0:
                     for t in self.nodes:
                         if t.n.name == v.name:
-                            #print("reachable_vulnerabilities:", t.name)
-                            u.reachable_vulnerabilities.append(t)
+                            #print("connections:", t.name)
+                            u.connections.append(t)
                 #For lower layer
                 else:
                     if arg[0] >= v.privilege:
                         for t in self.nodes:
                             if t.n is v:
-                                u.reachable_vulnerabilities.append(t)
+                                u.connections.append(t)
         
         #Initialize start and end in attack graph   
         for u in self.nodes:
@@ -133,7 +133,7 @@ class AttackGraph(Network):
     #Traverse graph                  
     def travelAgRecursive(self, u, e, path):
         val = 0
-        for v in u.reachable_vulnerabilities:
+        for v in u.connections:
 
             #Only include nodes with vulnerabilities in the path
             if v.inPath == 0 and (v.child != None or v.name == 'ag_attacker' or v is e):
@@ -167,8 +167,8 @@ class AttackGraph(Network):
         print('Printing attack graphs: ')
         for node in self.nodes:
             print("===============================================================")
-            print(i ,': ', node.name, ', ', "number of reachable_vulnerabilities: ", len(node.reachable_vulnerabilities))
-            for cons in node.reachable_vulnerabilities:
+            print(i ,': ', node.name, ', ', "number of connections: ", len(node.connections))
+            for cons in node.connections:
                 #the target connects to end point, do not print end point
                 if cons != self.e:
                     print(cons.name,)
