@@ -43,14 +43,6 @@ class node(object):
     def isLeaf(self):
         return (len(self.connections) == 1)
     
-class iot(node):
-    """
-    Create IoT device object. 
-    """
-    def __init__(self, name):
-        super(iot, self).__init__(name)
-        self.type = 'IOT Device'
-        
     def checkNodeInCons(self, node1, node2):
         """
         Check whether the node1 is in the connections of node2.

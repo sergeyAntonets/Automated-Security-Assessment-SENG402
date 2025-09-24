@@ -23,7 +23,7 @@ class Harm(object):
     def addToTreeRecursive(self, gate, childType, val, pri):
         for u in gate.con:
             #print(u.name)
-            if u.t is "node":
+            if u.t == "node":
                 if (u.n is not None) and (u.n.vul is not None):
                     childType = childType.lower()
                     if childType.find("attacktree") >= 0:

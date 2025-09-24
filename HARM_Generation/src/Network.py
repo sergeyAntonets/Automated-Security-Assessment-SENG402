@@ -25,16 +25,6 @@ class Network(object):
         self.subnets = []
         #Initialize vulnerability list which contains all node vulnerabilities
         self.vuls = []
-
-    def copyNet(self):
-        """
-        Copy the network to a network.
-        """
-        
-        temp = Network()
-        temp = copy.deepcopy(self)
-        
-        return temp
     
     def constructSE(self):
         """

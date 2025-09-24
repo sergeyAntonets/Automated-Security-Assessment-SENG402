@@ -96,7 +96,7 @@ class AttackTree(object):
             # vulNode
             for v in network_node.n.connections:
                 #For upper layer
-                if len(arg) is 0:
+                if len(arg) == 0:
                     # tNode
                     for t in nodes:
                         if t.n is v:
@@ -146,7 +146,7 @@ class AttackTree(object):
             value = 0
         
         for item in tGate:    
-            if (item is not target) and (item.t is "node"):
+            if (item is not target) and (item.t == "node"):
                 a_gate = andGate()
                 gate.connections.append(a_gate)
                 gate.connections.remove(item)
@@ -182,7 +182,7 @@ class AttackTree(object):
         removedGates = []
         for node in gate.connections:
             if node.t in ['andGate', 'orGate']:
-                if (len(node.connections) is 1) and (node.connections[0] is "removed"):
+                if (len(node.connections) == 1) and (node.connections[0] == "removed"):
                     removedGates.append(node)
                 else:
                     self.deleteEmptyGates(node)
@@ -194,7 +194,7 @@ class AttackTree(object):
         toChange = []
         for node in gate.connections:
             if node is target:
-                if len(gate.connections) is 1:
+                if len(gate.connections) == 1:
                     del gate.connections[:]
                     gate.connections.append("removed")
                     break

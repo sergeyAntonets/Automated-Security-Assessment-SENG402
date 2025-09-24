@@ -21,22 +21,19 @@ def addVulnerabilitiesToDevice(device: Device):
     """
 
     # Fetch vulnerabilities for the device's CPE from saved file or NVD
-    vulnerabilities_list: list = fetch_CVEs_for_CPE(device.CPE, number_of_CVEs=5)
+    vulnerabilities_data = fetch_CVEs_for_CPE(device.CPE, number_of_CVEs=5)
 
-    # Initialize with an empty list
-    vuln_network = VulnerabilityNetwork([])  
+    # Create a list of VulnerabilityNode objects
+    vulnerability_nodes = []
+    for vuln_data in vulnerabilities_data:
+        node = VulnerabilityNode("")  # Create node
+        node.construct_vulnerability(vuln_data)  # Populate node
+        vulnerability_nodes.append(node)
 
-    # Convert each vulnerability row from file to a VulnerabilityNode and add to the VulnerabilityNetwork
-    for vulnerability in vulnerabilities_list:
-        # The constructor __init__ requires a 'name'. We can pass an empty string
-        # as it will be overwritten in construct_vulnerability.
-        new_vulnerability_node: VulnerabilityNode = VulnerabilityNode("")
-        new_vulnerability_node.construct_vulnerability(vulnerability)
-        vuln_network.all_vulnerabilities.append(new_vulnerability_node)
+    # Create the VulnerabilityNetwork by passing the list of nodes to the constructor
+    device.vulnerabilities = VulnerabilityNetwork(vulnerability_nodes)
 
-    vuln_network.categorizeVulnerabilities()
 
-    device.vulnerabilities = vuln_network
 
 
 
@@ -95,4 +92,7 @@ def main():
     # harm = Harm()
     # harm.constructHarm(simple_network, "attackgraph",1,"attacktree",1,3)
 
-    
+
+
+# Entry point for script execution
+main()

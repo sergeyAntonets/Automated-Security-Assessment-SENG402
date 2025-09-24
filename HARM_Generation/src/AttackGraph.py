@@ -104,7 +104,7 @@ class AttackGraph(Network):
             #print(u)
             for v in u.n.reachable_vulnerabilities:
                 #For upper layer
-                if len(arg) is 0:
+                if len(arg) == 0:
                     for t in self.nodes:
                         if t.n.name == v.name:
                             #print("reachable_vulnerabilities:", t.name)
