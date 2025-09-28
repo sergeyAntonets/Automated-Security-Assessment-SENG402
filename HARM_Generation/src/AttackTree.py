@@ -17,7 +17,7 @@ class tNode(node):
     """
     def __init__(self, name):
         super(tNode, self).__init__(name)
-        self.n = None
+        self.node = None
         self.t = "node"
         self.val = 0
         # self.mv3 = metrics_v3()
@@ -31,7 +31,7 @@ class tVulNode(VulnerabilityNode):
     """
     def __init__(self, name):
         super(tVulNode, self).__init__(name)
-        self.n = None
+        self.node = None
         self.t = "node"
         self.val = 0
         self.command = 0
@@ -63,12 +63,12 @@ class AttackTree(object):
     
     #Preprocess for the construction
     def preprocess(self, network, nodes, val, *arg):  
-        for network_node in network.start + network.end + network.nodes:
+        for network_node in [network.start, network.end] + network.nodes:
             if network_node is not None:
                 #For vulNode
                 if type(network_node) is VulnerabilityNode:
                     tree_node = tVulNode('at_'+str(network_node.name))
-                    tree_node.precondition = network_node.precondition
+                    tree_node.postcondition = network_node.postcondition
                     # tn.mv2 = u.mv2
                     tree_node.vulname = network_node.name
                 #For node
@@ -81,7 +81,7 @@ class AttackTree(object):
                     else:
                         tree_node.val = val
                     
-                tree_node.n = network_node
+                tree_node.node = network_node
                 
                 #Assign default value to start and end in vulnerability network
                 if network_node in [network.start, network.end]:
@@ -94,19 +94,19 @@ class AttackTree(object):
         # tnode
         for network_node in nodes:
             # vulNode
-            for v in network_node.n.connections:
+            for vulnerability in network_node.node.connections:
                 #For upper layer
                 if len(arg) == 0:
                     # tNode
                     for t in nodes:
-                        if t.n is v:
+                        if t.node is vulnerability:
                             network_node.connections.append(t)
                 #For lower layer
                 else:
                     # Privilege value is used here to decide what vulnerabilities an attacker can use for attack paths 
-                    if v.privilege is not None and arg[0] >= v.privilege:
+                    if self.convert_condition_to_int(vulnerability.postcondition) is not None and arg[0] >= self.convert_condition_to_int(vulnerability.postcondition):
                         for t in nodes:
-                            if t.n is v:
+                            if t.node is vulnerability:
                                 network_node.connections.append(t)      
         return None
     
@@ -128,9 +128,9 @@ class AttackTree(object):
         #For more than one vulnerability
         else:
             for u in nodes:
-                if u.n is network.end:
+                if u.node is network.end:
                     e = u
-                if u.n is network.start:
+                if u.node is network.start:
                     self.topGate.connections.append(u)
             
             self.simplify(self.topGate, history, e)
@@ -234,5 +234,15 @@ class AttackTree(object):
     def treePrint(self):
         self.tPrintRecursive(self.topGate)
 
+    def convert_condition_to_int(self, condition):
+        """
+        Convert the string condition to integer.
+        """
+        if condition == "None":
+            return 1
+        elif condition == "User":
+            return 2
+        elif condition == "root":
+            return 3
 
    

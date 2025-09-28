@@ -61,9 +61,9 @@ def createSimpleNetwork():
     network.nodes.append(device1)
     network.nodes.append(device2)
 
-    # Set start and end devices in the network
-    network.start = device1
-    network.end = device2
+    # Set the start and end points in the network
+    network.constructSE()
+    
 
     # Connect devices on the network
     network.connectTwoWays(device1, device2)
@@ -82,6 +82,7 @@ def main():
 
     harm = Harm()
     harm.constructHarm(simple_network, "attackgraph",1,"attacktree",1,3)
+    print(harm.model.printAG())
 
 
 
