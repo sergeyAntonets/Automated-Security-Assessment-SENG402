@@ -71,17 +71,81 @@ def createSimpleNetwork():
     # Return the created network
     return network
 
+def createEnterpriseNetwork():
+    """
+    Create a more complex network with multiple devices.
+    :returns: network: the created network
+    """
+
+    # Create devices
+    
+    # Initialize the windows workstation, set it as the starting point for attacker and add vulnerabilities to it
+    win_workstation = Device("WindowsWorkstation", "cpe:2.3:o:microsoft:windows_10_21h2:-:*:*:*:*:*:arm64:*")
+    win_workstation.setStart()
+    addVulnerabilitiesToDevice(win_workstation)
+    win_workstation.subnet.append("Workstations")
+    
+    # Initialize the mac workstation and add vulnerabilities to it
+    mac_workstation = Device("MacWorkstation", "cpe:2.3:o:apple:macos:11.3.1:*:*:*:*:*:*:*")
+    addVulnerabilitiesToDevice(mac_workstation)
+    mac_workstation.subnet.append("Workstations")
+
+    # Initialize the web server, set it as the end point of the attack and add vulnerabilities to it
+    web_server = Device("WebServer", "cpe:2.3:a:apache:http_server:2.4.52:*:*:*:*:*:*:*")
+    web_server.subnet.append("DMZ")
+    addVulnerabilitiesToDevice(web_server)
+
+    # Initialize the DNS server and add vulnerabilities to it
+    dns_server = Device("DNSServer", "cpe:2.3:o:canonical:ubuntu_linux:20.04:*:*:*:lts:*:*:*")
+    addVulnerabilitiesToDevice(dns_server)
+    dns_server.subnet.append("DMZ")
+
+    # Initialize the database server, set it as the end point of the attack and add vulnerabilities to it
+    db_server = Device("DatabaseServer", "cpe:2.3:a:postgresql:postgresql:14.1:*:*:*:*:*:*:*")
+    db_server.setEnd()
+    addVulnerabilitiesToDevice(db_server)
+    db_server.subnet.append("Internal")
+
+    # Create the enterprise network
+    enterprise_network = Network()
+    enterprise_network.name = "Enterprise Network"
+
+    # WITHIN SUBNET CONNECTIONS
+    # DMZ devices can communicate
+    enterprise_network.connectTwoWays(web_server, dns_server)
+
+    # Workstations can communicate
+    enterprise_network.connectTwoWays(mac_workstation, win_workstation)
+
+    # CROSS-SUBNET CONNECTIONS (Direct)
+    # Web server needs database access
+    enterprise_network.connectTwoWays(web_server, db_server)  # DMZ ↔ Internal
+
+    # Workstations need database access
+    enterprise_network.connectTwoWays(mac_workstation, db_server) # Workstation ↔ Internal
+    enterprise_network.connectTwoWays(win_workstation, db_server) # Workstation ↔ Internal
+
+    # Add all nodes to network
+    enterprise_network.nodes.extend([web_server, dns_server, mac_workstation, win_workstation, db_server])
+    
+    # Set the start and end points in the network
+    enterprise_network.constructSE()
+    
+    return enterprise_network
+
+
 
 def main():
     """
     The entry point for network generation.
     """
 
-    simple_network = createSimpleNetwork()
-    print(simple_network)
+    # simple_network = createSimpleNetwork()
+    enterprise_network = createEnterpriseNetwork()
+    print(enterprise_network)
 
     harm = Harm()
-    harm.constructHarm(simple_network, "attackgraph",1,"attacktree",1,3)
+    harm.constructHarm(enterprise_network, "attackgraph",1,"attacktree",1,3)
     print(harm.model.printAG())
 
 
