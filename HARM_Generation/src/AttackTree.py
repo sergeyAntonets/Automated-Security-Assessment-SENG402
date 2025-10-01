@@ -103,8 +103,9 @@ class AttackTree(object):
                             network_node.connections.append(t)
                 #For lower layer
                 else:
-                    # Privilege value is used here to decide what vulnerabilities an attacker can use for attack paths 
-                    if self.convert_condition_to_int(vulnerability.postcondition) is not None and arg[0] >= self.convert_condition_to_int(vulnerability.postcondition):
+                    # Privilege value is used here to decide what vulnerabilities an attacker can use for attack paths
+                    print("Checking vulnerability:", (vulnerability.postcondition is not '') and arg[0] >= self.convert_condition_to_int(vulnerability.postcondition))
+                    if (vulnerability.postcondition is not '') and arg[0] >= self.convert_condition_to_int(vulnerability.postcondition):
                         for t in nodes:
                             if t.node is vulnerability:
                                 network_node.connections.append(t)      
@@ -225,7 +226,7 @@ class AttackTree(object):
         print(gate.name, '->',)
         for u in gate.connections:
             print(u.name)
-        print
+        print()
         for u in gate.connections:
             if u.t in ['andGate', 'orGate']:
                 self.tPrintRecursive(u)
@@ -242,7 +243,7 @@ class AttackTree(object):
             return 1
         elif condition == "User":
             return 2
-        elif condition == "root":
+        elif condition == "Root":
             return 3
 
    

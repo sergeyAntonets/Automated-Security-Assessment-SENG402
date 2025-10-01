@@ -146,7 +146,10 @@ def main():
 
     harm = Harm()
     harm.constructHarm(enterprise_network, "attackgraph",1,"attacktree",1,3)
-    print(harm.model.printAG())
+    harm.model.printAG()
+    print("!!!HERE!!")
+    harm.model.printPath()
+
 
 
 
