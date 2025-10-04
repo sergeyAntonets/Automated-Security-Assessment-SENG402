@@ -87,12 +87,14 @@ def createEnterpriseNetwork():
     
     # Initialize the mac workstation and add vulnerabilities to it
     mac_workstation = Device("MacWorkstation", "cpe:2.3:o:apple:macos:11.3.1:*:*:*:*:*:*:*")
+    mac_workstation.setStart()
     addVulnerabilitiesToDevice(mac_workstation)
     mac_workstation.subnet.append("Workstations")
 
     # Initialize the web server, set it as the end point of the attack and add vulnerabilities to it
     web_server = Device("WebServer", "cpe:2.3:a:apache:http_server:2.4.52:*:*:*:*:*:*:*")
     web_server.subnet.append("DMZ")
+    web_server.setStart()
     addVulnerabilitiesToDevice(web_server)
 
     # Initialize the DNS server and add vulnerabilities to it
@@ -147,7 +149,6 @@ def main():
     harm = Harm()
     harm.constructHarm(enterprise_network, "attackgraph",1,"attacktree",1,3)
     harm.model.printAG()
-    print("!!!HERE!!")
     harm.model.printPath()
 
 
