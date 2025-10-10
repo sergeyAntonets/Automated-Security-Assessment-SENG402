@@ -155,4 +155,5 @@ def main():
 
 
 # Entry point for script execution
-main()
+if __name__ == "__main__":
+    main()
