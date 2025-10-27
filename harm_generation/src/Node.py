@@ -1,10 +1,4 @@
-"""
-CREST Project 9: Automated security assessment for interconnected systems
-Created by Mengmeng Ge
-Modified by Moyang Feng
-05/02/2020
-This module contains node objects
-"""
+
 
 from random import *
 from math import *

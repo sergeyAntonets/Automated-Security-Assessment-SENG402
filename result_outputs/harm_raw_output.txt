@@ -1,0 +1,180 @@
+Printing all attack paths: 
+--------------------------------------------------
+ag_S-
+ag_WebServer
+ag_DatabaseServer
+ag_E-
+--------------------------------------------------
+--------------------------------------------------
+ag_S-
+ag_MacWorkstation
+ag_WindowsWorkstation
+ag_DatabaseServer
+ag_E-
+--------------------------------------------------
+--------------------------------------------------
+ag_S-
+ag_MacWorkstation
+ag_DatabaseServer
+ag_E-
+--------------------------------------------------
+--------------------------------------------------
+ag_S-
+ag_WindowsWorkstation
+ag_MacWorkstation
+ag_DatabaseServer
+ag_E-
+--------------------------------------------------
+--------------------------------------------------
+ag_S-
+ag_WindowsWorkstation
+ag_DatabaseServer
+ag_E-
+--------------------------------------------------
+
+
+Printing attack graphs: 
+===============================================================
+0 :  ag_WebServer ,  number of connections:  2
+ag_DNSServer
+ag_DatabaseServer
+attack tree for ag_WebServer  :
+orGate ->
+andGate
+
+andGate ->
+at_start
+orGate
+at_end
+
+orGate ->
+at_CVE-2024-38474
+at_CVE-2024-38475
+at_CVE-2024-38476
+at_CVE-2024-39573
+
+===============================================================
+1 :  ag_DNSServer ,  number of connections:  1
+ag_WebServer
+attack tree for ag_DNSServer  :
+orGate ->
+andGate
+
+andGate ->
+at_start
+orGate
+at_end
+
+orGate ->
+at_CVE-2022-1736
+andGate
+at_CVE-2020-27352
+
+andGate ->
+at_CVE-2023-5616
+orGate
+
+orGate ->
+at_CVE-2021-3899
+at_CVE-2022-1242
+at_CVE-2022-28657
+
+===============================================================
+2 :  ag_MacWorkstation ,  number of connections:  2
+ag_WindowsWorkstation
+ag_DatabaseServer
+attack tree for ag_MacWorkstation  :
+orGate ->
+andGate
+
+andGate ->
+at_start
+orGate
+at_end
+
+orGate ->
+at_CVE-2025-43200
+at_CVE-2025-31278
+at_CVE-2025-31279
+at_CVE-2025-31280
+at_CVE-2025-43186
+
+===============================================================
+3 :  ag_WindowsWorkstation ,  number of connections:  2
+ag_MacWorkstation
+ag_DatabaseServer
+attack tree for ag_WindowsWorkstation  :
+orGate ->
+andGate
+
+andGate ->
+at_start
+orGate
+at_end
+
+orGate ->
+andGate
+at_CVE-2025-32724
+andGate
+
+andGate ->
+at_CVE-2025-32715
+orGate
+
+orGate ->
+at_CVE-2025-32712
+at_CVE-2025-32713
+at_CVE-2025-32714
+at_CVE-2025-32716
+at_CVE-2025-32718
+
+andGate ->
+at_CVE-2025-33053
+orGate
+
+orGate ->
+at_CVE-2025-32712
+at_CVE-2025-32713
+at_CVE-2025-32714
+at_CVE-2025-32716
+at_CVE-2025-32718
+
+===============================================================
+4 :  ag_DatabaseServer ,  number of connections:  4
+ag_WebServer
+ag_MacWorkstation
+ag_WindowsWorkstation
+attack tree for ag_DatabaseServer  :
+orGate ->
+andGate
+
+andGate ->
+at_start
+orGate
+at_end
+
+orGate ->
+andGate
+andGate
+
+andGate ->
+at_CVE-2024-10977
+orGate
+
+orGate ->
+at_CVE-2024-10979
+at_CVE-2024-7348
+at_CVE-2023-5869
+at_CVE-2023-32305
+at_CVE-2022-2625
+
+andGate ->
+at_CVE-2022-41862
+orGate
+
+orGate ->
+at_CVE-2024-10979
+at_CVE-2024-7348
+at_CVE-2023-5869
+at_CVE-2023-32305
+at_CVE-2022-2625
