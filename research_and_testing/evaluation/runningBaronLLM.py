@@ -11,7 +11,7 @@ llm = Llama(
     model_path=model_path,
     n_ctx=2048,  
     n_gpu_layers=-1,  # Offload all layers to GPU
-    verbose=False,  # Enable verbose logging to see GPU usage
+    verbose=True,  # Enable verbose logging to see GPU usage
     use_mmap=True,  # for faster loading
 )
 
@@ -19,7 +19,7 @@ llm = Llama(
 def baron_local_generate(sys_prompt, question, max_tokens, temperature, top_p, seed, stop_sequences=None):
     if stop_sequences is None:
         stop_sequences = ["<|eot_id|>"]
-
+    # Set up user and system prompts 
     messages = [
         {"role": "system", "content": sys_prompt},
         {"role": "user", "content": question}

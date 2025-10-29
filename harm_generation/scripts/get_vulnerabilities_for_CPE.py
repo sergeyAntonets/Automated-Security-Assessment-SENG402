@@ -33,7 +33,7 @@ def get_latest_cves_for_cpe(cpe_string, number_of_CVEs):
 
     all_cves = []
     window_size_days = 119  # 120-day window as required by API
-    max_iterations = 50  # Prevent infinite loops (covers ~15+ years)
+    max_iterations = 50  # Prevent infinite loops
     current_end_date = datetime.now(timezone.utc).replace(hour=23, minute=59, second=59, microsecond=0)
     
     print(f"Fetching {number_of_CVEs} CVEs for {cpe_string}")
