@@ -32,12 +32,12 @@ ag_DatabaseServer
 ag_E-
 --------------------------------------------------
 
-
-Printing attack graphs: 
+Printing HARM: 
 ===============================================================
 0 :  ag_WebServer ,  number of connections:  2
 ag_DNSServer
 ag_DatabaseServer
+
 attack tree for ag_WebServer  :
 orGate ->
 andGate
@@ -56,6 +56,7 @@ at_CVE-2024-39573
 ===============================================================
 1 :  ag_DNSServer ,  number of connections:  1
 ag_WebServer
+
 attack tree for ag_DNSServer  :
 orGate ->
 andGate
@@ -83,6 +84,7 @@ at_CVE-2022-28657
 2 :  ag_MacWorkstation ,  number of connections:  2
 ag_WindowsWorkstation
 ag_DatabaseServer
+
 attack tree for ag_MacWorkstation  :
 orGate ->
 andGate
@@ -103,6 +105,7 @@ at_CVE-2025-43186
 3 :  ag_WindowsWorkstation ,  number of connections:  2
 ag_MacWorkstation
 ag_DatabaseServer
+
 attack tree for ag_WindowsWorkstation  :
 orGate ->
 andGate
@@ -144,6 +147,7 @@ at_CVE-2025-32718
 ag_WebServer
 ag_MacWorkstation
 ag_WindowsWorkstation
+
 attack tree for ag_DatabaseServer  :
 orGate ->
 andGate

@@ -35,6 +35,7 @@ class gVulNode(VulnerabilityNode):
         self.node = None
         #Store the Simulation value used in security analysis
         self.val = 0
+        # Flag to check if the node is in the current traversal path
         self.inPath = 0
         # self.mv3 = metrics_v3()
         
@@ -69,7 +70,7 @@ class AttackGraph(Network):
                 else:
                     graph_node= GraphNode('ag_' + str(node.name))
                         
-                    #Assigraph_nodedefault value to attacker node
+                    #Assign default value to attacker node
                     if node.isStart == True:
                         graph_node.val = -1
                     else:
@@ -83,7 +84,7 @@ class AttackGraph(Network):
                                                                              
                 graph_node.node = node
                 
-                #Assigraph_nodedefault value to start and end in network
+                #Assign default value to start and end in network
                 if node in [network.start, network.end]:
                     graph_node.val = -1
                     
@@ -91,17 +92,17 @@ class AttackGraph(Network):
                 #print(graph_node.name)
 
 
-        #Initialize connections for attack graph node   
+        #Initialize connections for attack graph node based on network connections
         for node in self.nodes:       
             #print(u)
             for v in node.node.connections:
-                #For upper layer
+                # For upper layer (no privilege check)
                 if len(arg) == 0:
                     for t in self.nodes:
                         if t.node.name == v.name:
                             #print("connections:", t.name)
                             node.connections.append(t)
-                #For lower layer
+                # For lower layer (with privilege check)
                 else:
                     if arg[0] >= v.privilege:
                         for t in self.nodes:
@@ -122,7 +123,7 @@ class AttackGraph(Network):
             self.nodes.remove(self.e)           
     
     
-    #Traverse graph                  
+    #Traverse graph recursively to find all attack paths
     def travelAgRecursive(self, node, e, path):
         val = 0
         for v in node.connections:
@@ -136,6 +137,7 @@ class AttackGraph(Network):
                 if v is not e:
                     val += self.travelAgRecursive(v, e, self.path)
                 else:
+                    # When the end is reached, add the current path to allpath
                     self.allpath.append(path[:])
 
                 self.path.pop()
