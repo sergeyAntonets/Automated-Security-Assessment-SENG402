@@ -29,8 +29,8 @@
   "revision": null,
   "target_modules": [
     "value",
-    "query",
-    "key"
+    "key",
+    "query"
   ],
   "target_parameters": null,
   "task_type": "SEQ_CLS",

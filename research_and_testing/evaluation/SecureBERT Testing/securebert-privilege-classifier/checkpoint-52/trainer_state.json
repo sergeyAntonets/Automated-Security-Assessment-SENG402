@@ -1,6 +1,6 @@
 {
   "best_global_step": 52,
-  "best_metric": 0.14285714285714285,
+  "best_metric": 0.2571428571428571,
   "best_model_checkpoint": "./securebert-privilege-classifier/checkpoint-52",
   "epoch": 2.0,
   "eval_steps": 500,
@@ -12,21 +12,21 @@
     {
       "epoch": 1.0,
       "eval_accuracy": 0.14285714285714285,
-      "eval_f1": 0.03571428571428571,
-      "eval_loss": 1.1099330186843872,
-      "eval_runtime": 0.0815,
-      "eval_samples_per_second": 85.838,
-      "eval_steps_per_second": 49.05,
+      "eval_f1": 0.07142857142857142,
+      "eval_loss": 1.1012834310531616,
+      "eval_runtime": 0.2004,
+      "eval_samples_per_second": 34.931,
+      "eval_steps_per_second": 19.961,
       "step": 26
     },
     {
       "epoch": 2.0,
-      "eval_accuracy": 0.2857142857142857,
-      "eval_f1": 0.14285714285714285,
-      "eval_loss": 1.1457868814468384,
-      "eval_runtime": 0.0718,
-      "eval_samples_per_second": 97.456,
-      "eval_steps_per_second": 55.689,
+      "eval_accuracy": 0.42857142857142855,
+      "eval_f1": 0.2571428571428571,
+      "eval_loss": 1.0927734375,
+      "eval_runtime": 0.1661,
+      "eval_samples_per_second": 42.156,
+      "eval_steps_per_second": 24.089,
       "step": 52
     }
   ],
@@ -56,7 +56,7 @@
       "attributes": {}
     }
   },
-  "total_flos": 3566880062568.0,
+  "total_flos": 3615769932192.0,
   "train_batch_size": 1,
   "trial_name": null,
   "trial_params": null

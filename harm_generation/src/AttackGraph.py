@@ -11,7 +11,7 @@ class GraphNode(node):
     def __init__(self, name):
         super(GraphNode, self).__init__(name)
         #Store the network node
-        self.n = None
+        self.node = None
         #Store the Simulation value used in security analysis
         self.val = 0
         self.vuls = []
@@ -32,7 +32,7 @@ class gVulNode(VulnerabilityNode):
     def __init__(self, name):
         super(gVulNode, self).__init__(name)
         #Store the vulnerability node
-        self.n = None
+        self.node = None
         #Store the Simulation value used in security analysis
         self.val = 0
         self.inPath = 0
@@ -58,74 +58,74 @@ class AttackGraph(Network):
         self.vuls = network.vuls        #All vuls in the network
                 
         #Instantiate nodes in attack graph using network info
-        for u in [network.start, network.end] + network.nodes:
-            if u is not None:
+        for node in [network.start, network.end] + network.nodes:
+            if node is not None:
                 #For vulnerability
-                if type(u) is VulnerabilityNode:
-                    gn = gVulNode('ag_' + str(u.name))
-                    gn.privilege = u.privilege
-                    # gn.mv2 = u.mv2
+                if type(node) is VulnerabilityNode:
+                    graph_node= gVulNode('ag_' + str(node.name))
+                    graph_node.privilege = node.privilege
+                    # graph_node.mv2 = node.mv2
                 #For node
                 else:
-                    gn = GraphNode('ag_' + str(u.name))
+                    graph_node= GraphNode('ag_' + str(node.name))
                         
-                    #Assign default value to attacker node
-                    if u.isStart == True:
-                        gn.val = -1
+                    #Assigraph_nodedefault value to attacker node
+                    if node.isStart == True:
+                        graph_node.val = -1
                     else:
-                        gn.val = val
+                        graph_node.val = val
                         
-                    if u is not network.start and u is not network.end:
-                        gn.type = u.type
+                    if node is not network.start and node is not network.end:
+                        graph_node.type = node.type
                         
-                        #for sub in u.subnet:
-                            #gn.subnet.append(sub)                
+                        #for sub in node.subnet:
+                            #graph_node.subnet.append(sub)                
                                                                              
-                gn.n = u
+                graph_node.node = node
                 
-                #Assign default value to start and end in network
-                if u in [network.start, network.end]:
-                    gn.val = -1
+                #Assigraph_nodedefault value to start and end in network
+                if node in [network.start, network.end]:
+                    graph_node.val = -1
                     
-                self.nodes.append(gn)
-                #print(gn.name)
+                self.nodes.append(graph_node)
+                #print(graph_node.name)
 
 
         #Initialize connections for attack graph node   
-        for u in self.nodes:       
+        for node in self.nodes:       
             #print(u)
-            for v in u.n.connections:
+            for v in node.node.connections:
                 #For upper layer
                 if len(arg) == 0:
                     for t in self.nodes:
-                        if t.n.name == v.name:
+                        if t.node.name == v.name:
                             #print("connections:", t.name)
-                            u.connections.append(t)
+                            node.connections.append(t)
                 #For lower layer
                 else:
                     if arg[0] >= v.privilege:
                         for t in self.nodes:
-                            if t.n is v:
-                                u.connections.append(t)
+                            if t.node is v:
+                                node.connections.append(t)
         
         #Initialize start and end in attack graph   
-        for u in self.nodes:
-            if u.n is network.start:
-                self.s = u    
-            if u.n is network.end:
-                self.e = u
+        for node in self.nodes:
+            if node.node is network.start:
+                self.start = node    
+            if node.node is network.end:
+                self.e = node
         
         #Remove start and end from nodes in attack graph      
-        if self.s is not None:
-            self.nodes.remove(self.s)
+        if self.start is not None:
+            self.nodes.remove(self.start)
         if self.e is not None:
             self.nodes.remove(self.e)           
     
     
     #Traverse graph                  
-    def travelAgRecursive(self, u, e, path):
+    def travelAgRecursive(self, node, e, path):
         val = 0
-        for v in u.connections:
+        for v in node.connections:
 
             #Only include nodes with vulnerabilities in the path
             if v.inPath == 0 and (v.child != None or v.name == 'ag_attacker' or v is e):
@@ -147,9 +147,9 @@ class AttackGraph(Network):
     def travelAg(self): 
         self.allpath = []
         #Start to traverse from start point
-        self.path = [self.s]
-        #print(self.s.name, self.e.name)
-        val = self.travelAgRecursive(self.s, self.e, self.path) #The value records recursion times
+        self.path = [self.start]
+        #print(self.start.name, self.e.name)
+        val = self.travelAgRecursive(self.start, self.e, self.path) #The value records recursion times
 
         return val   
     
@@ -167,7 +167,7 @@ class AttackGraph(Network):
             print
             i += 1
             
-            if node.child != None and node is not self.s and node is not self.e and node.name != 'ag_attacker':
+            if node.child != None and node is not self.start and node is not self.e and node.name != 'ag_attacker':
                 print("attack tree for " + node.name, " :")
                 node.child.treePrint()
         

@@ -205,7 +205,7 @@ def fetch_and_write_cves(cpe_string, number_of_CVEs):
         write_cves_to_tsv(cpe_string, latest_cves)
     return latest_cves
 
-def fetch_CVEs_for_CPE(cpe_string, number_of_CVEs=10):
+def fetch_CVEs_for_CPE(cpe_string, number_of_CVEs):
     """
     Checks if a CVE file exists for the given CPE. If not, it fetches
     the CVEs from the NVD API and creates the file.
@@ -274,7 +274,3 @@ def update_vulnerability_in_tsv(cve_id, cpe_string, cvss_vector=None, postcondit
 
 
 
-# # Testing the function
-# cpe = "cpe:2.3:o:microsoft:windows_10_21h2:-:*:*:*:*:*:arm64:*"
-# num_cves = 5
-# fetch_and_write_cves(cpe, num_cves)

@@ -11,7 +11,7 @@ llm = Llama(
     model_path=model_path,
     n_ctx=2048,  
     n_gpu_layers=-1,  # Offload all layers to GPU
-    verbose=True,  # Enable verbose logging to see GPU usage
+    verbose=False,  # Enable for verbose logging to see GPU usage
     use_mmap=True,  # for faster loading
 )
 

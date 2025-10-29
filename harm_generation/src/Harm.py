@@ -15,31 +15,31 @@ class Harm(object):
         self.model = self.makeHARM(net, up, valueUp, lo, valueLow, pri)
 
     def addToTreeRecursive(self, gate, childType, val, pri):
-        for u in gate.con:
-            #print(u.name)
-            if u.t == "node":
-                if (u.n is not None) and (u.n.vulnerabilities is not None):
+        for current_node in gate.con:
+            #print(current_node.name)
+            if current_node.t == "node":
+                if (current_node.node is not None) and (current_node.node.vulnerabilities is not None):
                     childType = childType.lower()
                     if childType.find("attacktree") >= 0:
-                        u.child = AttackTree(u.n.vulnerabilities, val, pri)
+                        current_node.child = AttackTree(current_node.node.vulnerabilities, val, pri)
                     elif childType.find("attackgraph") >= 0:
-                        u.child = AttackGraph(u.n.vulnerabilities, val, pri)
+                        current_node.child = AttackGraph(current_node.node.vulnerabilities, val, pri)
                     else:
                         print("Error")
             else:
-                self.addToTreeRecursive(u, childType, val, pri)
+                self.addToTreeRecursive(current_node, childType, val, pri)
                 
     def addToTree(self, aT, childType, val, pri):
         self.addToTreeRecursive(aT.topGate, childType, val, pri)
         
     def addToGraph(self, aG, childType, val, pri):
-        for u in aG.nodes:
-            if (u.n is not None) and (u.n.vulnerabilities is not None):
+        for current_node in aG.nodes:
+            if (current_node.node is not None) and (current_node.node.vulnerabilities is not None):
                 childType = childType.lower()
                 if childType.find("attacktree") >= 0:
-                    u.child = AttackTree(u.n.vulnerabilities, val, pri)
+                    current_node.child = AttackTree(current_node.node.vulnerabilities, val, pri)
                 elif childType.find("attackgraph") >= 0:
-                    u.child = AttackGraph(u.n.vulnerabilities, val, pri)
+                    current_node.child = AttackGraph(current_node.node.vulnerabilities, val, pri)
                 else:
                     print("Error")
     

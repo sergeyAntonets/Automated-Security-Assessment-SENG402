@@ -12,7 +12,7 @@ class tNode(node):
     def __init__(self, name):
         super(tNode, self).__init__(name)
         self.node = None
-        self.t = "node"
+        self.type = "node"
         self.val = 0
         # self.mv3 = metrics_v3()
     
@@ -26,7 +26,7 @@ class tVulNode(VulnerabilityNode):
     def __init__(self, name):
         super(tVulNode, self).__init__(name)
         self.node = None
-        self.t = "node"
+        self.type = "node"
         self.val = 0
         self.command = 0
         # self.mv3 = metrics_v3()
@@ -37,12 +37,12 @@ class tVulNode(VulnerabilityNode):
 class andGate(node):
     def __init__(self):
         super(andGate, self).__init__("andGate")
-        self.t = "andGate"
+        self.type = "andGate"
 
 class orGate(node):
     def __init__(self):
         super(orGate, self).__init__("orGate")
-        self.t = "orGate"
+        self.type = "orGate"
 
      
 class AttackTree(object):
@@ -141,7 +141,7 @@ class AttackTree(object):
             value = 0
         
         for item in tGate:    
-            if (item is not target) and (item.t == "node"):
+            if (item is not target) and (item.type == "node"):
                 a_gate = andGate()
                 gate.connections.append(a_gate)
                 gate.connections.remove(item)
@@ -176,7 +176,7 @@ class AttackTree(object):
     def deleteEmptyGates(self, gate):
         removedGates = []
         for node in gate.connections:
-            if node.t in ['andGate', 'orGate']:
+            if node.type in ['andGate', 'orGate']:
                 if (len(node.connections) == 1) and (node.connections[0] == "removed"):
                     removedGates.append(node)
                 else:
@@ -196,7 +196,7 @@ class AttackTree(object):
                 else:                    
                     toChange.append(node)                    
                     
-            elif node.t in ['andGate', 'orGate']:
+            elif node.type in ['andGate', 'orGate']:
                 self.targetOutRecursive(node, target)
         for node in toChange:
             gate.connections.remove(node)
@@ -208,7 +208,7 @@ class AttackTree(object):
     def foldgate(self, gate):
         removedGates = []
         for node in gate.connections:
-            if node.t in ['andGate', 'orGate']:
+            if node.type in ['andGate', 'orGate']:
                 self.foldgate(node)
                 if len(node.connections) == 1:
                     gate.connections.extend(node.connections)
@@ -222,7 +222,7 @@ class AttackTree(object):
             print(u.name)
         print()
         for u in gate.connections:
-            if u.t in ['andGate', 'orGate']:
+            if u.type in ['andGate', 'orGate']:
                 self.tPrintRecursive(u)
     
     #Print tree
